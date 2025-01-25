@@ -1,124 +1,16 @@
 %builtins range_check
 
-from uint4096 import Uint4096, uint4096_lib
-from starkware.cairo.common.cairo_builtins import (
-    HashBuiltin,
-    PoseidonBuiltin,
-    BitwiseBuiltin,
-    KeccakBuiltin,
-    SignatureBuiltin,
-    EcOpBuiltin,
-)
+from starkware.cairo.common.uint256 import Uint256
+from uint512 import Uint512
+from uint1024 import Uint1024
+from uint2048 import Uint2048, uint2048_add, uint2048_mul
 
 func main{range_check_ptr}() {
-    let a: Uint4096 = Uint4096(
-        d00=0,
-        d01=0,
-        d02=0,
-        d03=0,
-        d04=0,
-        d05=0,
-        d06=0,
-        d07=0,
-        d08=0,
-        d09=0,
-        d10=0,
-        d11=0,
-        d12=0,
-        d13=0,
-        d14=0,
-        d15=0,
-        d16=0,
-        d17=0,
-        d18=0,
-        d19=0,
-        d20=0,
-        d21=0,
-        d22=0,
-        d23=0,
-        d24=0,
-        d25=0,
-        d26=0,
-        d27=0,
-        d28=0,
-        d29=0,
-        d30=0,
-        d31=0,
-    );
-
-    let b: Uint4096 = Uint4096(
-        d00=0,
-        d01=0,
-        d02=0,
-        d03=0,
-        d04=0,
-        d05=0,
-        d06=0,
-        d07=0,
-        d08=0,
-        d09=0,
-        d10=0,
-        d11=0,
-        d12=0,
-        d13=0,
-        d14=0,
-        d15=0,
-        d16=0,
-        d17=0,
-        d18=0,
-        d19=0,
-        d20=0,
-        d21=0,
-        d22=0,
-        d23=0,
-        d24=0,
-        d25=0,
-        d26=0,
-        d27=0,
-        d28=0,
-        d29=0,
-        d30=0,
-        d31=0,
-    );
-
-    let c: Uint4096 = Uint4096(
-        d00=0,
-        d01=0,
-        d02=0,
-        d03=0,
-        d04=0,
-        d05=0,
-        d06=0,
-        d07=0,
-        d08=0,
-        d09=0,
-        d10=0,
-        d11=0,
-        d12=0,
-        d13=0,
-        d14=0,
-        d15=0,
-        d16=0,
-        d17=0,
-        d18=0,
-        d19=0,
-        d20=0,
-        d21=0,
-        d22=0,
-        d23=0,
-        d24=0,
-        d25=0,
-        d26=0,
-        d27=0,
-        d28=0,
-        d29=0,
-        d30=0,
-        d31=0,
-    );
-
-    let (low, high) = uint4096_lib.mul(a,b);
-    let bool = uint4096_lib.eq(low, c);
-    assert bool = 1;
+    
+    let a = Uint2048(low=Uint1024(low=Uint512(low=Uint256(low=0xfffffffffffffffffffffff, high=0), high=Uint256(low=0, high=0)), high=Uint512(low=Uint256(low=0, high=0), high=Uint256(low=0, high=0))), high=Uint1024(low=Uint512(low=Uint256(low=0, high=0), high=Uint256(low=0, high=0)), high=Uint512(low=Uint256(low=0, high=0), high=Uint256(low=0, high=0))));
+    let b = Uint2048(low=Uint1024(low=Uint512(low=Uint256(low=0xfffffffffffffffffffffff, high=0), high=Uint256(low=0, high=0)), high=Uint512(low=Uint256(low=0, high=0), high=Uint256(low=0, high=0))), high=Uint1024(low=Uint512(low=Uint256(low=0, high=0), high=Uint256(low=0, high=0)), high=Uint512(low=Uint256(low=0, high=0), high=Uint256(low=0, high=0))));
+    let (res, carry) = uint2048_mul(a, b);
+    %{ print(ids.res.low.low.low.high) %}
 
     return ();
 }
