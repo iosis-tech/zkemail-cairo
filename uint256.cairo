@@ -24,3 +24,13 @@ func uint256_add{range_check_ptr}(a: Uint256, b: Uint256, c_in: felt) -> (c: Uin
 
     return (c=res, c_out=carry_high);
 }
+
+func uint256_eq{range_check_ptr}(a: Uint256, b: Uint256) -> felt {
+    if (a.high != b.high) {
+        return 0;
+    }
+    if (a.low != b.low) {
+        return 0;
+    }
+    return 1;
+}
