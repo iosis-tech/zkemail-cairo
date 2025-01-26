@@ -16,53 +16,23 @@ func uint512_add{range_check_ptr}(a: Uint512, b: Uint512, c_in: felt) -> (c: Uin
     return (c=Uint512(low=ll, high=hh), c_out=c_out);
 }
 
+// TODO change to Karatsuba algorithm
 func uint512_mul{range_check_ptr}(a: Uint512, b: Uint512) -> (c: Uint512, d: Uint512) {
-    alloc_locals;
-    
-    // Step 1: Multiply low and high parts
-    let (z0_l, z0_h) = uint256_mul(a.low, b.low);
-    let (z2_l, z2_h) = uint256_mul(a.high, b.high);
+    let (low_part_low, low_part_high) = uint256_mul(a.low, b.low);
+    let (low_high_cross_low, low_high_cross_high) = uint256_mul(a.low, b.high);
+    let (high_low_cross_low, high_low_cross_high) = uint256_mul(a.high, b.low);
+    let (high_part_low, high_part_high) = uint256_mul(a.high, b.high);
 
-    // Step 2: Add the high and low parts of a and b
-    let (X, local carry_X) = uint256_add(a.high, a.low, 0);
-    let (Y, local carry_Y) = uint256_add(b.high, b.low, 0);
+    let (cross_low_sum, cross_carry) = uint256_add(low_high_cross_low, high_low_cross_low, 0);
+    let (cross_high_sum, cross_carry_1) = uint256_add(low_high_cross_high, high_low_cross_high, cross_carry);
 
-    let res: Uint256 = Uint256(low=0, high=0);
+    let (low_part_high_updated, carry1) = uint256_add(low_part_high, cross_low_sum, 0);
+    let (low_part_with_cross_high, carry2) = uint256_add(cross_high_sum, high_part_low, carry1);
 
-    // Step 3: Multiply the sums
-    let (z1_l, z1_h) = uint256_mul(X, Y);
+    let (final_high_part, _) = uint256_add(low_part_with_cross_high, high_part_high, carry2 + cross_carry_1);
 
-    if (carry_X == 1) {
-        let (z1_h_new, carry_z1_h) = uint256_add(z1_h, X, 0);
-        let (z2_h_new, _) = uint256_add(z2_h, res, carry_z1_h);
-
-        // Step 4: Compute the cross terms
-        let (L, carry_L) = uint256_add(z1_l, z0_h, 0);
-        let (H, carry_H) = uint256_add(z1_h_new, z2_l, carry_L);
-
-        let (z2_h_new, _) = uint256_add(z2_h_new, res, carry_H);
-
-        return (c=Uint512(low=z0_l, high=L), d=Uint512(low=H, high=z2_h_new));
-    }
-
-    if (carry_Y == 1) {
-        let (z1_h_new, carry_z1_h) = uint256_add(z1_h, Y, 0);
-        let (z2_h_new, _) = uint256_add(z2_h, res, carry_z1_h);
-
-        // Step 4: Compute the cross terms
-        let (L, carry_L) = uint256_add(z1_l, z0_h, 0);
-        let (H, carry_H) = uint256_add(z1_h_new, z2_l, carry_L);
-
-        let (z2_h_new, _) = uint256_add(z2_h_new, res, carry_H);
-
-        return (c=Uint512(low=z0_l, high=L), d=Uint512(low=H, high=z2_h_new));
-    }
-
-    // Step 4: Compute the cross terms
-    let (L, carry_L) = uint256_add(z1_l, z0_h, 0);
-    let (H, carry_H) = uint256_add(z1_h, z2_l, carry_L);
-
-    let (z2_h, _) = uint256_add(z2_h, res, carry_H);
-
-    return (c=Uint512(low=z0_l, high=L), d=Uint512(low=H, high=z2_h));
+    return (
+        c=Uint512(low=low_part_low, high=low_part_high_updated), 
+        d=Uint512(low=high_low_cross_high, high=final_high_part)
+    );
 }
