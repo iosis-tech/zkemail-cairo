@@ -35,16 +35,9 @@ func main{range_check_ptr}() {
     %}
     
     local a: Uint2048;
-    %{ set_u2048(ids.a, 8128108201820182) %}
+    %{ set_u2048(ids.a, 10) %}
     local b: Uint2048;
-    %{ set_u2048(ids.b, 8128108201820182) %}
-    local c: Uint2048;
-    %{ set_u2048(ids.c, 8128108201820182) %}
-
-    let res = uint2048_eq(a,b);
-    assert res = 1;
-
-    %{ print(get_u2048(ids.a)) %}
+    %{ set_u2048(ids.b, 2) %}
 
     return ();
 }

@@ -46,11 +46,12 @@ func uint1024_mul{range_check_ptr}(a: Uint1024, b: Uint1024) -> (c: Uint1024, d:
     let (low_part_high_updated, carry1) = uint512_add(low_part_high, cross_low_sum, 0);
     let (low_part_with_cross_high, carry2) = uint512_add(cross_high_sum, high_part_low, carry1);
 
-    let (final_high_part, _) = uint512_add(low_part_with_cross_high, high_part_high, carry2 + cross_carry_1);
+    let (res) = uint512_zero();
+    let (final_high_part, _) = uint512_add(res, high_part_high, carry2 + cross_carry_1);
 
     return (
         c=Uint1024(low=low_part_low, high=low_part_high_updated), 
-        d=Uint1024(low=high_low_cross_high, high=final_high_part)
+        d=Uint1024(low=low_part_with_cross_high, high=final_high_part)
     );
 }
 

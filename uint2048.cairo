@@ -46,11 +46,12 @@ func uint2048_mul{range_check_ptr}(a: Uint2048, b: Uint2048) -> (c: Uint2048, d:
     let (low_part_high_updated, carry1) = uint1024_add(low_part_high, cross_low_sum, 0);
     let (low_part_with_cross_high, carry2) = uint1024_add(cross_high_sum, high_part_low, carry1);
 
-    let (final_high_part, _) = uint1024_add(low_part_with_cross_high, high_part_high, carry2 + cross_carry_1);
+    let (res) = uint1024_zero();
+    let (final_high_part, _) = uint1024_add(res, high_part_high, carry2 + cross_carry_1);
 
     return (
         c=Uint2048(low=low_part_low, high=low_part_high_updated), 
-        d=Uint2048(low=high_low_cross_high, high=final_high_part)
+        d=Uint2048(low=low_part_with_cross_high, high=final_high_part)
     );
 }
 
