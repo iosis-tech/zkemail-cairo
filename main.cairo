@@ -3,12 +3,11 @@
 from starkware.cairo.common.uint256 import Uint256
 from uint512 import Uint512
 from uint1024 import Uint1024
-from uint2048 import Uint2048, uint2048_add, uint2048_mul, uint2048_eq
+from uint2048 import Uint2048, uint2048_add, uint2048_mul, uint2048_eq, uint2048_mul_div_mod
 
 func main{range_check_ptr}() {
     alloc_locals;
     %{
-
         def get_u512(v):
             return (v.high.high << 128*3) + (v.high.low << 128*2) + (v.low.high << 128*1) + (v.low.low << 128*0)
 
@@ -31,13 +30,20 @@ func main{range_check_ptr}() {
         def set_u2048(v, value):
             set_u1024(v.low, value >> 1024*0)
             set_u1024(v.high, value >> 1024*1)
-
     %}
-    
+
     local a: Uint2048;
-    %{ set_u2048(ids.a, 10) %}
+    %{ set_u2048(ids.a, 91223) %}
     local b: Uint2048;
-    %{ set_u2048(ids.b, 2) %}
+    %{ set_u2048(ids.b, 9192) %}
+    local m: Uint2048;
+    %{ set_u2048(ids.m, 19) %}
+
+    let (c, d, e) = uint2048_mul_div_mod(a, b, m);
+
+    %{ print(get_u2048(ids.c)) %}
+    %{ print(get_u2048(ids.d)) %}
+    %{ print(get_u2048(ids.e)) %}
 
     return ();
 }
