@@ -1,0 +1,1 @@
+cairo-compile main.cairo --output compiled.json

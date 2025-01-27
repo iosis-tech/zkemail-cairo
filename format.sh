@@ -1,0 +1,1 @@
+cairo-format -i *.cairo
