@@ -1,4 +1,4 @@
-from uint512 import Uint512, uint512_add, uint512_mul, uint512_zero, uint512_check, uint512_eq
+from uint512 import Uint512, uint512_add, uint512_mul, uint512_zero, uint512_check, uint512_eq, uint512_one
 
 struct Uint1024 {
     low: Uint512,
@@ -14,6 +14,12 @@ func uint1024_check{range_check_ptr}(a: Uint1024) {
 func uint1024_zero() -> (res: Uint1024) {
     let (res) = uint512_zero();
     return (res=Uint1024(low=res, high=res));
+}
+
+func uint1024_one() -> (one: Uint1024) {
+    let (one) = uint512_one();
+    let (res) = uint512_zero();
+    return (one=Uint1024(low=one, high=res));
 }
 
 func uint1024_eq{range_check_ptr}(a: Uint1024, b: Uint1024) -> felt {
@@ -87,6 +93,43 @@ func uint1024_unsigned_div_rem{range_check_ptr}(a: Uint512, div: Uint512) -> (
     let (check_val, add_carry) = uint1024_add(res_mul, remainder);
     assert check_val = a;
     assert add_carry = 0;
+
+    return (quotient=quotient, remainder=remainder);
+}
+
+func uint1024_add_div_mod{range_check_ptr}(a: Uint1024, b: Uint1024, div: Uint1024) -> (
+    quotient: Uint1024, remainder: Uint1024
+) {
+    alloc_locals;
+
+    // Compute a + b (1024 bits).
+    let (local ab, c) = uint1024_add(a, b, 0);
+
+    // Guess the quotient and remainder of (a + b) / d.
+    local quotient: Uint1024;
+    local remainder: Uint1024;
+    %{
+        a = get_u1024(ids.a)
+        b = get_u1024(ids.b)
+        div = get_u1024(ids.div)
+
+        v = a + b
+        quotient = v // div
+        remainder = v % div
+
+        set_u1024(ids.quotient, (quotient >> 1024*0) & ((1 << 1024) - 1))
+        set_u1024(ids.remainder, remainder)
+    %}
+
+    uint1024_check(quotient);
+    uint1024_check(remainder);
+    let (res_mul, carry) = uint1024_mul(quotient, div);
+    let (res) = uint1024_zero();
+    assert carry = res;
+
+    let (check_val, add_carry) = uint1024_add(res_mul, remainder, 0);
+    assert check_val = ab;
+    assert add_carry = c;
 
     return (quotient=quotient, remainder=remainder);
 }

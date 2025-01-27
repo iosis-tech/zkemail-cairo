@@ -5,7 +5,10 @@ from uint1024 import (
     uint1024_zero,
     uint1024_check,
     uint1024_eq,
+    uint1024_one,
 )
+from starkware.cairo.common.cairo_builtins import BitwiseBuiltin
+from starkware.cairo.common.bitwise import bitwise_and
 
 struct Uint2048 {
     low: Uint1024,
@@ -21,6 +24,12 @@ func uint2048_check{range_check_ptr}(a: Uint2048) {
 func uint2048_zero() -> (res: Uint2048) {
     let (res) = uint1024_zero();
     return (res=Uint2048(low=res, high=res));
+}
+
+func uint2048_one() -> (one: Uint2048) {
+    let (one) = uint1024_one();
+    let (res) = uint1024_zero();
+    return (one=Uint2048(low=one, high=res));
 }
 
 func uint2048_eq{range_check_ptr}(a: Uint2048, b: Uint2048) -> felt {
@@ -98,7 +107,44 @@ func uint2048_unsigned_div_rem{range_check_ptr}(a: Uint2048, div: Uint2048) -> (
     return (quotient=quotient, remainder=remainder);
 }
 
-func uint2048_mul_div_mod{range_check_ptr}(a: Uint2048, b: Uint2048, div: Uint2048) -> (
+func uint2048_add_div_mod{range_check_ptr}(a: Uint2048, b: Uint2048, div: Uint2048) -> (
+    quotient: Uint2048, remainder: Uint2048
+) {
+    alloc_locals;
+
+    // Compute a + b (2048 bits).
+    let (local ab, c) = uint2048_add(a, b, 0);
+
+    // Guess the quotient and remainder of (a + b) / d.
+    local quotient: Uint2048;
+    local remainder: Uint2048;
+    %{
+        a = get_u2048(ids.a)
+        b = get_u2048(ids.b)
+        div = get_u2048(ids.div)
+
+        v = a + b
+        quotient = v // div
+        remainder = v % div
+
+        set_u2048(ids.quotient, (quotient >> 2048*0) & ((1 << 2048) - 1))
+        set_u2048(ids.remainder, remainder)
+    %}
+
+    uint2048_check(quotient);
+    uint2048_check(remainder);
+    let (res_mul, carry) = uint2048_mul(quotient, div);
+    let (res) = uint2048_zero();
+    assert carry = res;
+
+    let (check_val, add_carry) = uint2048_add(res_mul, remainder, 0);
+    assert check_val = ab;
+    assert add_carry = c;
+
+    return (quotient=quotient, remainder=remainder);
+}
+
+func uint2048_mul_div_mod{range_check_ptr, bitwise_ptr: BitwiseBuiltin*}(a: Uint2048, b: Uint2048, div: Uint2048) -> (
     quotient_low: Uint2048, quotient_high: Uint2048, remainder: Uint2048
 ) {
     alloc_locals;
@@ -144,4 +190,23 @@ func uint2048_mul_div_mod{range_check_ptr}(a: Uint2048, b: Uint2048, div: Uint20
     assert x1 = ab_high;
 
     return (quotient_low=quotient_low, quotient_high=quotient_high, remainder=remainder);
+}
+
+func uint2048_pow_mod_recursive{range_check_ptr, bitwise_ptr: BitwiseBuiltin*}(base: Uint2048, exp: felt, mod: Uint2048) -> (res: Uint2048) {
+    if (exp == 0) {
+        let (res) = uint2048_one();
+        return (res=res);
+    }
+
+    let (x_and_y) = bitwise_and(exp, 1);
+    if (x_and_y == 0) {
+        let (h) = uint2048_pow_mod_recursive(base, exp / 2, mod);
+        let (_,_,res) = uint2048_mul_div_mod(h,h,mod);
+        return (res=res);
+    } else {
+        let (b) = uint2048_pow_mod_recursive(base, exp - 1, mod);
+        let (_,_,res) = uint2048_mul_div_mod(base,b,mod);
+        return (res=res);
+    }
+
 }

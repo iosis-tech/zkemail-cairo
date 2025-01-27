@@ -16,6 +16,10 @@ func uint512_zero() -> (res: Uint512) {
     return (res=Uint512(low=Uint256(low=0, high=0), high=Uint256(low=0, high=0)));
 }
 
+func uint512_one() -> (one: Uint512) {
+    return (one=Uint512(low=Uint256(low=1, high=0), high=Uint256(low=0, high=0)));
+}
+
 func uint512_eq{range_check_ptr}(a: Uint512, b: Uint512) -> felt {
     let eq = uint256_eq(a.high, b.high);
     if (eq != 1) {
@@ -86,6 +90,43 @@ func uint512_unsigned_div_rem{range_check_ptr}(a: Uint512, div: Uint512) -> (
     let (check_val, add_carry) = uint512_add(res_mul, remainder);
     assert check_val = a;
     assert add_carry = 0;
+
+    return (quotient=quotient, remainder=remainder);
+}
+
+func uint512_add_div_mod{range_check_ptr}(a: Uint512, b: Uint512, div: Uint512) -> (
+    quotient: Uint512, remainder: Uint512
+) {
+    alloc_locals;
+
+    // Compute a + b (512 bits).
+    let (local ab, c) = uint512_add(a, b, 0);
+
+    // Guess the quotient and remainder of (a + b) / d.
+    local quotient: Uint512;
+    local remainder: Uint512;
+    %{
+        a = get_u512(ids.a)
+        b = get_u512(ids.b)
+        div = get_u512(ids.div)
+
+        v = a + b
+        quotient = v // div
+        remainder = v % div
+
+        set_u512(ids.quotient, (quotient >> 512*0) & ((1 << 512) - 1))
+        set_u512(ids.remainder, remainder)
+    %}
+
+    uint512_check(quotient);
+    uint512_check(remainder);
+    let (res_mul, carry) = uint512_mul(quotient, div);
+    let (res) = uint512_zero();
+    assert carry = res;
+
+    let (check_val, add_carry) = uint512_add(res_mul, remainder, 0);
+    assert check_val = ab;
+    assert add_carry = c;
 
     return (quotient=quotient, remainder=remainder);
 }
