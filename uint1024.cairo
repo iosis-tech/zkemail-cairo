@@ -1,4 +1,12 @@
-from uint512 import Uint512, uint512_add, uint512_mul, uint512_zero, uint512_check, uint512_eq, uint512_one
+from uint512 import (
+    Uint512,
+    uint512_add,
+    uint512_mul,
+    uint512_zero,
+    uint512_check,
+    uint512_eq,
+    uint512_one,
+)
 
 struct Uint1024 {
     low: Uint512,
@@ -64,120 +72,4 @@ func uint1024_mul{range_check_ptr}(a: Uint1024, b: Uint1024) -> (c: Uint1024, d:
         c=Uint1024(low=low_part_low, high=low_part_high_updated),
         d=Uint1024(low=low_part_with_cross_high, high=final_high_part),
     );
-}
-
-func uint1024_unsigned_div_rem{range_check_ptr}(a: Uint512, div: Uint512) -> (
-    quotient: Uint512, remainder: Uint512
-) {
-    alloc_locals;
-
-    // Guess the quotient and the remainder
-    local quotient: Uint512;
-    local remainder: Uint512;
-    %{
-        a = get_u1024(ids.a)
-        div = get_u1024(ids.div)
-
-        quotient, remainder = divmod(a, div)
-
-        set_u1024(ids.quotient, quotient)
-        set_u1024(ids.remainder, remainder)
-    %}
-
-    uint1024_check(quotient);
-    uint1024_check(remainder);
-    let (res_mul, carry) = uint1024_mul(quotient, div);
-    let zero = uint1024_zero();
-    assert carry = zero;
-
-    let (check_val, add_carry) = uint1024_add(res_mul, remainder);
-    assert check_val = a;
-    assert add_carry = 0;
-
-    return (quotient=quotient, remainder=remainder);
-}
-
-func uint1024_add_div_mod{range_check_ptr}(a: Uint1024, b: Uint1024, div: Uint1024) -> (
-    quotient: Uint1024, remainder: Uint1024
-) {
-    alloc_locals;
-
-    // Compute a + b (1024 bits).
-    let (local ab, c) = uint1024_add(a, b, 0);
-
-    // Guess the quotient and remainder of (a + b) / d.
-    local quotient: Uint1024;
-    local remainder: Uint1024;
-    %{
-        a = get_u1024(ids.a)
-        b = get_u1024(ids.b)
-        div = get_u1024(ids.div)
-
-        v = a + b
-        quotient = v // div
-        remainder = v % div
-
-        set_u1024(ids.quotient, (quotient >> 1024*0) & ((1 << 1024) - 1))
-        set_u1024(ids.remainder, remainder)
-    %}
-
-    uint1024_check(quotient);
-    uint1024_check(remainder);
-    let (res_mul, carry) = uint1024_mul(quotient, div);
-    let (res) = uint1024_zero();
-    assert carry = res;
-
-    let (check_val, add_carry) = uint1024_add(res_mul, remainder, 0);
-    assert check_val = ab;
-    assert add_carry = c;
-
-    return (quotient=quotient, remainder=remainder);
-}
-
-func uint1024_mul_div_mod{range_check_ptr}(a: Uint1024, b: Uint1024, div: Uint1024) -> (
-    quotient_low: Uint1024, quotient_high: Uint1024, remainder: Uint1024
-) {
-    alloc_locals;
-
-    // Compute a * b (512 bits).
-    let (local ab_low, local ab_high) = uint1024_mul(a, b);
-
-    // Guess the quotient and remainder of (a * b) / d.
-    local quotient_low: Uint1024;
-    local quotient_high: Uint1024;
-    local remainder: Uint1024;
-    %{
-        a = get_u1024(ids.a)
-        b = get_u1024(ids.b)
-        div = get_u1024(ids.div)
-
-        quotient, remainder = divmod(a * b, div)
-
-        set_u1024(ids.quotient_low, (quotient >> 1024*0) & ((1 << 1024) - 1))
-        set_u1024(ids.quotient_high, (quotient >> 1024*1) & ((1 << 1024) - 1))
-        set_u1024(ids.remainder, remainder)
-    %}
-
-    // Compute x = quotient * div + remainder.
-    uint1024_check(quotient_high);
-    let (quotient_mod10, quotient_mod11) = uint1024_mul(quotient_high, div);
-    uint1024_check(quotient_low);
-    let (quotient_mod00, quotient_mod01) = uint1024_mul(quotient_low, div);
-    // Since x should equal a * b, the high 256 bits must be zero.
-    let (res) = uint1024_zero();
-    assert quotient_mod11 = res;
-
-    // The low 256 bits of x must be ab_low.
-    uint1024_check(remainder);
-    let (x0, carry0) = uint1024_add(quotient_mod00, remainder, 0);
-    assert x0 = ab_low;
-
-    let (x1, carry1) = uint1024_add(quotient_mod01, quotient_mod10, 0);
-    assert carry1 = 0;
-    let (x1, carry2) = uint1024_add(x1, res, carry0);
-    assert carry2 = 0;
-
-    assert x1 = ab_high;
-
-    return (quotient_low=quotient_low, quotient_high=quotient_high, remainder=remainder);
 }

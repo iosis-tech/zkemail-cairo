@@ -9,7 +9,7 @@ n = public_key.public_numbers().n
 e = public_key.public_numbers().e
 
 # Example plaintext message and ciphertext
-plaintext = 908320182309821
+plaintext = 0x821391231231982893182941293819280398104908509832902843
 ciphertext = pow(plaintext, e, n)  # Simulate RSA encryption
 
 # Verify the ciphertext using divmod
