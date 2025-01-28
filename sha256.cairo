@@ -1,31 +1,25 @@
-from starkware.cairo.common.cairo_builtins import BitwiseBuiltin
 from starkware.cairo.common.alloc import alloc
-from starkware.cairo.common.memcpy import memcpy
-from starkware.cairo.common.math import unsigned_div_rem
+from starkware.cairo.common.cairo_builtins import BitwiseBuiltin
 from starkware.cairo.common.cairo_sha256.sha256_utils import (
     SHA256_INPUT_CHUNK_SIZE_FELTS,
     finalize_sha256,
     SHA256_STATE_SIZE_FELTS,
 )
+from starkware.cairo.common.math import unsigned_div_rem
+from starkware.cairo.common.memcpy import memcpy
 
-// requires hint arg sha256_data that is multiple of 16 u32 numbers to hash and padded specific to sha256 to give expected results
-func sha256{range_check_ptr: felt, bitwise_ptr: BitwiseBuiltin*}() -> (
-    hash_ptr: felt*, hash_len: felt
-) {
+// requires arg data_ptr that is multiple of 16 u32 numbers to hash and padded specific to sha256 to give expected results
+func sha256{range_check_ptr: felt, bitwise_ptr: BitwiseBuiltin*}(
+    data_ptr: felt*, data_len: felt
+) -> (hash_ptr: felt*, hash_len: felt) {
     alloc_locals;
 
-    local data_len;  // Number of elements to hash
-    local data_ptr: felt*;  // Pointer to start of data
     local init_state: felt*;  // Pointer to start of data
     %{
         from starkware.cairo.common.cairo_sha256.sha256_utils import IV
-        ids.data_len = len(sha256_data)
         ids.init_state = init_state = segments.add()
         for i, val in enumerate(IV):
             memory[init_state + i] = val
-        ids.data_ptr = data_ptr = segments.add()
-        for i, val in enumerate(sha256_data):
-            memory[data_ptr + i] = val
     %}
 
     // Number of hash blocks needed to hash data

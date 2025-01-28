@@ -1,5 +1,5 @@
-from uint256 import uint256_add, uint256_eq
 from starkware.cairo.common.uint256 import Uint256, uint256_mul, uint256_check
+from uint256 import uint256_add, uint256_eq
 
 struct Uint512 {
     low: Uint256,

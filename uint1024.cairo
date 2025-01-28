@@ -1,3 +1,5 @@
+from starkware.cairo.common.bitwise import bitwise_and
+from starkware.cairo.common.cairo_builtins import BitwiseBuiltin
 from uint512 import (
     Uint512,
     uint512_add,
@@ -7,8 +9,6 @@ from uint512 import (
     uint512_eq,
     uint512_one,
 )
-from starkware.cairo.common.cairo_builtins import BitwiseBuiltin
-from starkware.cairo.common.bitwise import bitwise_and
 
 struct Uint1024 {
     low: Uint512,

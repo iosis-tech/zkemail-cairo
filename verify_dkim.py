@@ -72,6 +72,7 @@ def hash_body(body: str) -> str:
     # ** Reduce all sequences of WSP within a line to a single SP ** 
     canonicalized_body = body.strip().encode() + b"\r\n"
     print("body to sha256:", bytes_to_u32_array(preprocess(bytearray(canonicalized_body))))
+    print(SHA256.new(canonicalized_body).digest().hex())
 
     bh = b64encode(SHA256.new(canonicalized_body).digest())
     assert bh == b'aeLbTnlUQQv2UFEWKHeiL5Q0NjOwj4ktNSInk8rN/P0='
@@ -143,6 +144,29 @@ def hash_headers(mail: email.message.Message, header_to_hash: str, bh: str) -> S
     headers += "dkim-signature:{}\r\n".format(dkim_header)
     headers = re.sub(r'b=[\w0-9\s/+=]+', "b=", headers) #replace b=... with be=
 
+    # Find the index of 'bh=' in the encoded byte array
+    b = preprocess(bytearray(headers.encode()))
+    start_index = b.find(b'bh=') + 3
+    end_index = b.find(b';', start_index)
+
+    start_idx_chunk = (start_index)//4
+    start_idx_rem = (start_index)%4
+    end_idx_chunk = (end_index)//4
+    end_idx_rem = (end_index)%4
+
+    print("start_idx_chunk", start_idx_chunk)
+    print("start_idx_rem", start_idx_rem)
+    print("end_idx_chunk", end_idx_chunk)
+    print("end_idx_rem", end_idx_rem)
+
+    chunk = start_idx_chunk
+    byte = start_idx_rem
+
+    while chunk != end_idx_chunk or byte != end_idx_rem:
+        print(chr((bytes_to_u32_array(b)[chunk] & (0xFF << (8 * (4 - byte - 1)))) >> (8 * (4 - byte - 1))))
+        z, byte =  divmod(byte + 1,4)
+        chunk += z
+
     print("headers to sha256:", bytes_to_u32_array(preprocess(bytearray(headers.encode()))))
 
     hheader = SHA256.new(headers.encode())
@@ -178,8 +202,6 @@ def verify_signature(hashed_header: SHA256.SHA256Hash, signature: bytes, public_
     emLen = modBits // 8
 
     signature_long = bytes_to_long(signature)
-
-    print(signature_long)
     
     expected_message_int = pow(signature_long, public_key.e, public_key.n)
     expected_message = long_to_bytes(expected_message_int, emLen)
@@ -199,6 +221,7 @@ if __name__ == '__main__':
     body = mail.get_payload()
 
     body_hash = hash_body(body)
+    print(body_hash)
 
     if body_hash == dkim_parameter['bh']:
         print("body hash matches")
