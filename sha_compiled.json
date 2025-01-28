@@ -42032,7 +42032,7 @@
                     {
                         "location": {
                             "end_col": 7,
-                            "end_line": 30,
+                            "end_line": 51,
                             "input_file": {
                                 "filename": "sha256.cairo"
                             },
@@ -42058,12 +42058,12 @@
                             "parent_location": [
                                 {
                                     "end_col": 89,
-                                    "end_line": 33,
+                                    "end_line": 54,
                                     "input_file": {
                                         "filename": "sha256.cairo"
                                     },
                                     "start_col": 32,
-                                    "start_line": 33
+                                    "start_line": 54
                                 },
                                 "While trying to retrieve the implicit argument 'range_check_ptr' in:"
                             ],
@@ -42105,12 +42105,12 @@
                     "parent_location": [
                         {
                             "end_col": 57,
-                            "end_line": 33,
+                            "end_line": 54,
                             "input_file": {
                                 "filename": "sha256.cairo"
                             },
                             "start_col": 49,
-                            "start_line": 33
+                            "start_line": 54
                         },
                         "While expanding the reference 'data_len' in:"
                     ],
@@ -42140,12 +42140,12 @@
                 "hints": [],
                 "inst": {
                     "end_col": 88,
-                    "end_line": 33,
+                    "end_line": 54,
                     "input_file": {
                         "filename": "sha256.cairo"
                     },
                     "start_col": 59,
-                    "start_line": 33
+                    "start_line": 54
                 }
             },
             "707": {
@@ -42170,12 +42170,12 @@
                 "hints": [],
                 "inst": {
                     "end_col": 89,
-                    "end_line": 33,
+                    "end_line": 54,
                     "input_file": {
                         "filename": "sha256.cairo"
                     },
                     "start_col": 32,
-                    "start_line": 33
+                    "start_line": 54
                 }
             },
             "709": {
@@ -42201,24 +42201,24 @@
                 "hints": [],
                 "inst": {
                     "end_col": 25,
-                    "end_line": 33,
+                    "end_line": 54,
                     "input_file": {
                         "filename": "sha256.cairo"
                     },
                     "parent_location": [
                         {
                             "end_col": 25,
-                            "end_line": 33,
+                            "end_line": 54,
                             "input_file": {
                                 "filename": "sha256.cairo"
                             },
                             "start_col": 10,
-                            "start_line": 33
+                            "start_line": 54
                         },
                         "While auto generating local variable for 'num_data_blocks'."
                     ],
                     "start_col": 10,
-                    "start_line": 33
+                    "start_line": 54
                 }
             },
             "710": {
@@ -42251,7 +42251,7 @@
                     "parent_location": [
                         {
                             "end_col": 89,
-                            "end_line": 33,
+                            "end_line": 54,
                             "input_file": {
                                 "filename": "sha256.cairo"
                             },
@@ -42265,12 +42265,12 @@
                                     "parent_location": [
                                         {
                                             "end_col": 89,
-                                            "end_line": 33,
+                                            "end_line": 54,
                                             "input_file": {
                                                 "filename": "sha256.cairo"
                                             },
                                             "start_col": 32,
-                                            "start_line": 33
+                                            "start_line": 54
                                         },
                                         "While trying to update the implicit return value 'range_check_ptr' in:"
                                     ],
@@ -42280,7 +42280,7 @@
                                 "While auto generating local variable for 'range_check_ptr'."
                             ],
                             "start_col": 32,
-                            "start_line": 33
+                            "start_line": 54
                         },
                         "While trying to update the implicit return value 'range_check_ptr' in:"
                     ],
@@ -42311,12 +42311,12 @@
                 "hints": [],
                 "inst": {
                     "end_col": 39,
-                    "end_line": 35,
+                    "end_line": 56,
                     "input_file": {
                         "filename": "sha256.cairo"
                     },
                     "start_col": 32,
-                    "start_line": 35
+                    "start_line": 56
                 }
             },
             "713": {
@@ -42343,24 +42343,24 @@
                 "hints": [],
                 "inst": {
                     "end_col": 28,
-                    "end_line": 35,
+                    "end_line": 56,
                     "input_file": {
                         "filename": "sha256.cairo"
                     },
                     "parent_location": [
                         {
                             "end_col": 28,
-                            "end_line": 35,
+                            "end_line": 56,
                             "input_file": {
                                 "filename": "sha256.cairo"
                             },
                             "start_col": 10,
-                            "start_line": 35
+                            "start_line": 56
                         },
                         "While auto generating local variable for 'hash256_ptr'."
                     ],
                     "start_col": 10,
-                    "start_line": 35
+                    "start_line": 56
                 }
             },
             "714": {
@@ -42388,24 +42388,24 @@
                 "hints": [],
                 "inst": {
                     "end_col": 26,
-                    "end_line": 37,
+                    "end_line": 58,
                     "input_file": {
                         "filename": "sha256.cairo"
                     },
                     "parent_location": [
                         {
                             "end_col": 26,
-                            "end_line": 37,
+                            "end_line": 58,
                             "input_file": {
                                 "filename": "sha256.cairo"
                             },
                             "start_col": 9,
-                            "start_line": 37
+                            "start_line": 58
                         },
                         "While auto generating local variable for 'hash256_ptr_start'."
                     ],
                     "start_col": 9,
-                    "start_line": 37
+                    "start_line": 58
                 }
             },
             "715": {
@@ -42433,36 +42433,36 @@
                 "hints": [],
                 "inst": {
                     "end_col": 28,
-                    "end_line": 35,
+                    "end_line": 56,
                     "input_file": {
                         "filename": "sha256.cairo"
                     },
                     "parent_location": [
                         {
                             "end_col": 28,
-                            "end_line": 35,
+                            "end_line": 56,
                             "input_file": {
                                 "filename": "sha256.cairo"
                             },
                             "parent_location": [
                                 {
                                     "end_col": 27,
-                                    "end_line": 40,
+                                    "end_line": 61,
                                     "input_file": {
                                         "filename": "sha256.cairo"
                                     },
                                     "start_col": 16,
-                                    "start_line": 40
+                                    "start_line": 61
                                 },
                                 "While expanding the reference 'hash256_ptr' in:"
                             ],
                             "start_col": 10,
-                            "start_line": 35
+                            "start_line": 56
                         },
                         "While auto generating local variable for 'hash256_ptr'."
                     ],
                     "start_col": 10,
-                    "start_line": 35
+                    "start_line": 56
                 }
             },
             "716": {
@@ -42497,12 +42497,12 @@
                     "parent_location": [
                         {
                             "end_col": 37,
-                            "end_line": 40,
+                            "end_line": 61,
                             "input_file": {
                                 "filename": "sha256.cairo"
                             },
                             "start_col": 29,
-                            "start_line": 40
+                            "start_line": 61
                         },
                         "While expanding the reference 'data_ptr' in:"
                     ],
@@ -42535,12 +42535,12 @@
                 "hints": [],
                 "inst": {
                     "end_col": 68,
-                    "end_line": 40,
+                    "end_line": 61,
                     "input_file": {
                         "filename": "sha256.cairo"
                     },
                     "start_col": 39,
-                    "start_line": 40
+                    "start_line": 61
                 }
             },
             "719": {
@@ -42568,12 +42568,12 @@
                 "hints": [],
                 "inst": {
                     "end_col": 69,
-                    "end_line": 40,
+                    "end_line": 61,
                     "input_file": {
                         "filename": "sha256.cairo"
                     },
                     "start_col": 9,
-                    "start_line": 40
+                    "start_line": 61
                 }
             },
             "721": {
@@ -42601,12 +42601,12 @@
                 "hints": [],
                 "inst": {
                     "end_col": 59,
-                    "end_line": 41,
+                    "end_line": 62,
                     "input_file": {
                         "filename": "sha256.cairo"
                     },
                     "start_col": 16,
-                    "start_line": 41
+                    "start_line": 62
                 }
             },
             "723": {
@@ -42641,12 +42641,12 @@
                     "parent_location": [
                         {
                             "end_col": 71,
-                            "end_line": 41,
+                            "end_line": 62,
                             "input_file": {
                                 "filename": "sha256.cairo"
                             },
                             "start_col": 61,
-                            "start_line": 41
+                            "start_line": 62
                         },
                         "While expanding the reference 'init_state' in:"
                     ],
@@ -42679,12 +42679,12 @@
                 "hints": [],
                 "inst": {
                     "end_col": 96,
-                    "end_line": 41,
+                    "end_line": 62,
                     "input_file": {
                         "filename": "sha256.cairo"
                     },
                     "start_col": 73,
-                    "start_line": 41
+                    "start_line": 62
                 }
             },
             "726": {
@@ -42712,12 +42712,12 @@
                 "hints": [],
                 "inst": {
                     "end_col": 97,
-                    "end_line": 41,
+                    "end_line": 62,
                     "input_file": {
                         "filename": "sha256.cairo"
                     },
                     "start_col": 9,
-                    "start_line": 41
+                    "start_line": 62
                 }
             },
             "728": {
@@ -42752,7 +42752,7 @@
                     "parent_location": [
                         {
                             "end_col": 89,
-                            "end_line": 33,
+                            "end_line": 54,
                             "input_file": {
                                 "filename": "sha256.cairo"
                             },
@@ -42766,36 +42766,36 @@
                                     "parent_location": [
                                         {
                                             "end_col": 89,
-                                            "end_line": 33,
+                                            "end_line": 54,
                                             "input_file": {
                                                 "filename": "sha256.cairo"
                                             },
                                             "parent_location": [
                                                 {
                                                     "end_col": 34,
-                                                    "end_line": 53,
+                                                    "end_line": 74,
                                                     "input_file": {
                                                         "filename": "sha256.cairo"
                                                     },
                                                     "parent_location": [
                                                         {
                                                             "end_col": 48,
-                                                            "end_line": 42,
+                                                            "end_line": 63,
                                                             "input_file": {
                                                                 "filename": "sha256.cairo"
                                                             },
                                                             "start_col": 9,
-                                                            "start_line": 42
+                                                            "start_line": 63
                                                         },
                                                         "While trying to retrieve the implicit argument 'range_check_ptr' in:"
                                                     ],
                                                     "start_col": 19,
-                                                    "start_line": 53
+                                                    "start_line": 74
                                                 },
                                                 "While expanding the reference 'range_check_ptr' in:"
                                             ],
                                             "start_col": 32,
-                                            "start_line": 33
+                                            "start_line": 54
                                         },
                                         "While trying to update the implicit return value 'range_check_ptr' in:"
                                     ],
@@ -42805,7 +42805,7 @@
                                 "While auto generating local variable for 'range_check_ptr'."
                             ],
                             "start_col": 32,
-                            "start_line": 33
+                            "start_line": 54
                         },
                         "While trying to update the implicit return value 'range_check_ptr' in:"
                     ],
@@ -42838,48 +42838,48 @@
                 "hints": [],
                 "inst": {
                     "end_col": 28,
-                    "end_line": 35,
+                    "end_line": 56,
                     "input_file": {
                         "filename": "sha256.cairo"
                     },
                     "parent_location": [
                         {
                             "end_col": 28,
-                            "end_line": 35,
+                            "end_line": 56,
                             "input_file": {
                                 "filename": "sha256.cairo"
                             },
                             "parent_location": [
                                 {
                                     "end_col": 54,
-                                    "end_line": 53,
+                                    "end_line": 74,
                                     "input_file": {
                                         "filename": "sha256.cairo"
                                     },
                                     "parent_location": [
                                         {
                                             "end_col": 48,
-                                            "end_line": 42,
+                                            "end_line": 63,
                                             "input_file": {
                                                 "filename": "sha256.cairo"
                                             },
                                             "start_col": 9,
-                                            "start_line": 42
+                                            "start_line": 63
                                         },
                                         "While trying to retrieve the implicit argument 'hash256_ptr' in:"
                                     ],
                                     "start_col": 36,
-                                    "start_line": 53
+                                    "start_line": 74
                                 },
                                 "While expanding the reference 'hash256_ptr' in:"
                             ],
                             "start_col": 10,
-                            "start_line": 35
+                            "start_line": 56
                         },
                         "While auto generating local variable for 'hash256_ptr'."
                     ],
                     "start_col": 10,
-                    "start_line": 35
+                    "start_line": 56
                 }
             },
             "730": {
@@ -42914,12 +42914,12 @@
                     "parent_location": [
                         {
                             "end_col": 30,
-                            "end_line": 42,
+                            "end_line": 63,
                             "input_file": {
                                 "filename": "sha256.cairo"
                             },
                             "start_col": 22,
-                            "start_line": 42
+                            "start_line": 63
                         },
                         "While expanding the reference 'data_ptr' in:"
                     ],
@@ -42952,36 +42952,36 @@
                 "hints": [],
                 "inst": {
                     "end_col": 25,
-                    "end_line": 33,
+                    "end_line": 54,
                     "input_file": {
                         "filename": "sha256.cairo"
                     },
                     "parent_location": [
                         {
                             "end_col": 25,
-                            "end_line": 33,
+                            "end_line": 54,
                             "input_file": {
                                 "filename": "sha256.cairo"
                             },
                             "parent_location": [
                                 {
                                     "end_col": 47,
-                                    "end_line": 42,
+                                    "end_line": 63,
                                     "input_file": {
                                         "filename": "sha256.cairo"
                                     },
                                     "start_col": 32,
-                                    "start_line": 42
+                                    "start_line": 63
                                 },
                                 "While expanding the reference 'num_data_blocks' in:"
                             ],
                             "start_col": 10,
-                            "start_line": 33
+                            "start_line": 54
                         },
                         "While auto generating local variable for 'num_data_blocks'."
                     ],
                     "start_col": 10,
-                    "start_line": 33
+                    "start_line": 54
                 }
             },
             "732": {
@@ -43009,12 +43009,12 @@
                 "hints": [],
                 "inst": {
                     "end_col": 48,
-                    "end_line": 42,
+                    "end_line": 63,
                     "input_file": {
                         "filename": "sha256.cairo"
                     },
                     "start_col": 9,
-                    "start_line": 42
+                    "start_line": 63
                 }
             },
             "734": {
@@ -43043,27 +43043,27 @@
                 "hints": [
                     {
                         "location": {
-                            "end_col": 115,
-                            "end_line": 47,
+                            "end_col": 127,
+                            "end_line": 68,
                             "input_file": {
                                 "filename": "sha256.cairo"
                             },
                             "start_col": 5,
-                            "start_line": 47
+                            "start_line": 68
                         },
                         "n_prefix_newlines": 0
                     }
                 ],
                 "inst": {
                     "end_col": 34,
-                    "end_line": 53,
+                    "end_line": 74,
                     "input_file": {
                         "filename": "sha256.cairo"
                     },
                     "parent_location": [
                         {
                             "end_col": 48,
-                            "end_line": 42,
+                            "end_line": 63,
                             "input_file": {
                                 "filename": "sha256.cairo"
                             },
@@ -43077,12 +43077,12 @@
                                     "parent_location": [
                                         {
                                             "end_col": 56,
-                                            "end_line": 49,
+                                            "end_line": 70,
                                             "input_file": {
                                                 "filename": "sha256.cairo"
                                             },
                                             "start_col": 5,
-                                            "start_line": 49
+                                            "start_line": 70
                                         },
                                         "While trying to retrieve the implicit argument 'range_check_ptr' in:"
                                     ],
@@ -43092,12 +43092,12 @@
                                 "While expanding the reference 'range_check_ptr' in:"
                             ],
                             "start_col": 9,
-                            "start_line": 42
+                            "start_line": 63
                         },
                         "While trying to update the implicit return value 'range_check_ptr' in:"
                     ],
                     "start_col": 19,
-                    "start_line": 53
+                    "start_line": 74
                 }
             },
             "735": {
@@ -43140,12 +43140,12 @@
                             "parent_location": [
                                 {
                                     "end_col": 56,
-                                    "end_line": 49,
+                                    "end_line": 70,
                                     "input_file": {
                                         "filename": "sha256.cairo"
                                     },
                                     "start_col": 5,
-                                    "start_line": 49
+                                    "start_line": 70
                                 },
                                 "While trying to retrieve the implicit argument 'bitwise_ptr' in:"
                             ],
@@ -43184,36 +43184,36 @@
                 "hints": [],
                 "inst": {
                     "end_col": 26,
-                    "end_line": 37,
+                    "end_line": 58,
                     "input_file": {
                         "filename": "sha256.cairo"
                     },
                     "parent_location": [
                         {
                             "end_col": 26,
-                            "end_line": 37,
+                            "end_line": 58,
                             "input_file": {
                                 "filename": "sha256.cairo"
                             },
                             "parent_location": [
                                 {
                                     "end_col": 38,
-                                    "end_line": 49,
+                                    "end_line": 70,
                                     "input_file": {
                                         "filename": "sha256.cairo"
                                     },
                                     "start_col": 21,
-                                    "start_line": 49
+                                    "start_line": 70
                                 },
                                 "While expanding the reference 'hash256_ptr_start' in:"
                             ],
                             "start_col": 9,
-                            "start_line": 37
+                            "start_line": 58
                         },
                         "While auto generating local variable for 'hash256_ptr_start'."
                     ],
                     "start_col": 9,
-                    "start_line": 37
+                    "start_line": 58
                 }
             },
             "737": {
@@ -43242,48 +43242,48 @@
                 "hints": [],
                 "inst": {
                     "end_col": 54,
-                    "end_line": 53,
+                    "end_line": 74,
                     "input_file": {
                         "filename": "sha256.cairo"
                     },
                     "parent_location": [
                         {
                             "end_col": 48,
-                            "end_line": 42,
+                            "end_line": 63,
                             "input_file": {
                                 "filename": "sha256.cairo"
                             },
                             "parent_location": [
                                 {
                                     "end_col": 38,
-                                    "end_line": 45,
+                                    "end_line": 66,
                                     "input_file": {
                                         "filename": "sha256.cairo"
                                     },
                                     "parent_location": [
                                         {
                                             "end_col": 55,
-                                            "end_line": 49,
+                                            "end_line": 70,
                                             "input_file": {
                                                 "filename": "sha256.cairo"
                                             },
                                             "start_col": 40,
-                                            "start_line": 49
+                                            "start_line": 70
                                         },
                                         "While expanding the reference 'hash256_ptr_end' in:"
                                     ],
                                     "start_col": 27,
-                                    "start_line": 45
+                                    "start_line": 66
                                 },
                                 "While expanding the reference 'hash256_ptr' in:"
                             ],
                             "start_col": 9,
-                            "start_line": 42
+                            "start_line": 63
                         },
                         "While trying to update the implicit return value 'hash256_ptr' in:"
                     ],
                     "start_col": 36,
-                    "start_line": 53
+                    "start_line": 74
                 }
             },
             "738": {
@@ -43312,12 +43312,12 @@
                 "hints": [],
                 "inst": {
                     "end_col": 56,
-                    "end_line": 49,
+                    "end_line": 70,
                     "input_file": {
                         "filename": "sha256.cairo"
                     },
                     "start_col": 5,
-                    "start_line": 49
+                    "start_line": 70
                 }
             },
             "740": {
@@ -43360,12 +43360,12 @@
                             "parent_location": [
                                 {
                                     "end_col": 15,
-                                    "end_line": 50,
+                                    "end_line": 71,
                                     "input_file": {
                                         "filename": "sha256.cairo"
                                     },
                                     "start_col": 5,
-                                    "start_line": 50
+                                    "start_line": 71
                                 },
                                 "While trying to retrieve the implicit argument 'output_ptr' in:"
                             ],
@@ -43411,7 +43411,7 @@
                     "parent_location": [
                         {
                             "end_col": 56,
-                            "end_line": 49,
+                            "end_line": 70,
                             "input_file": {
                                 "filename": "sha256.cairo"
                             },
@@ -43425,12 +43425,12 @@
                                     "parent_location": [
                                         {
                                             "end_col": 15,
-                                            "end_line": 50,
+                                            "end_line": 71,
                                             "input_file": {
                                                 "filename": "sha256.cairo"
                                             },
                                             "start_col": 5,
-                                            "start_line": 50
+                                            "start_line": 71
                                         },
                                         "While trying to retrieve the implicit argument 'range_check_ptr' in:"
                                     ],
@@ -43440,7 +43440,7 @@
                                 "While expanding the reference 'range_check_ptr' in:"
                             ],
                             "start_col": 5,
-                            "start_line": 49
+                            "start_line": 70
                         },
                         "While trying to update the implicit return value 'range_check_ptr' in:"
                     ],
@@ -43481,7 +43481,7 @@
                     "parent_location": [
                         {
                             "end_col": 56,
-                            "end_line": 49,
+                            "end_line": 70,
                             "input_file": {
                                 "filename": "sha256.cairo"
                             },
@@ -43495,12 +43495,12 @@
                                     "parent_location": [
                                         {
                                             "end_col": 15,
-                                            "end_line": 50,
+                                            "end_line": 71,
                                             "input_file": {
                                                 "filename": "sha256.cairo"
                                             },
                                             "start_col": 5,
-                                            "start_line": 50
+                                            "start_line": 71
                                         },
                                         "While trying to retrieve the implicit argument 'bitwise_ptr' in:"
                                     ],
@@ -43510,7 +43510,7 @@
                                 "While expanding the reference 'bitwise_ptr' in:"
                             ],
                             "start_col": 5,
-                            "start_line": 49
+                            "start_line": 70
                         },
                         "While trying to update the implicit return value 'bitwise_ptr' in:"
                     ],
@@ -43544,12 +43544,12 @@
                 "hints": [],
                 "inst": {
                     "end_col": 15,
-                    "end_line": 50,
+                    "end_line": 71,
                     "input_file": {
                         "filename": "sha256.cairo"
                     },
                     "start_col": 5,
-                    "start_line": 50
+                    "start_line": 71
                 }
             },
             "744": {
@@ -43575,24 +43575,24 @@
                     {
                         "location": {
                             "end_col": 7,
-                            "end_line": 67,
+                            "end_line": 88,
                             "input_file": {
                                 "filename": "sha256.cairo"
                             },
                             "start_col": 5,
-                            "start_line": 59
+                            "start_line": 80
                         },
                         "n_prefix_newlines": 1
                     }
                 ],
                 "inst": {
                     "end_col": 14,
-                    "end_line": 71,
+                    "end_line": 92,
                     "input_file": {
                         "filename": "sha256.cairo"
                     },
                     "start_col": 9,
-                    "start_line": 71
+                    "start_line": 92
                 }
             },
             "746": {
@@ -43618,12 +43618,12 @@
                 "hints": [],
                 "inst": {
                     "end_col": 7,
-                    "end_line": 71,
+                    "end_line": 92,
                     "input_file": {
                         "filename": "sha256.cairo"
                     },
                     "start_col": 5,
-                    "start_line": 71
+                    "start_line": 92
                 }
             },
             "748": {
@@ -43649,36 +43649,36 @@
                 "hints": [],
                 "inst": {
                     "end_col": 34,
-                    "end_line": 53,
+                    "end_line": 74,
                     "input_file": {
                         "filename": "sha256.cairo"
                     },
                     "parent_location": [
                         {
                             "end_col": 34,
-                            "end_line": 53,
+                            "end_line": 74,
                             "input_file": {
                                 "filename": "sha256.cairo"
                             },
                             "parent_location": [
                                 {
                                     "end_col": 19,
-                                    "end_line": 72,
+                                    "end_line": 93,
                                     "input_file": {
                                         "filename": "sha256.cairo"
                                     },
                                     "start_col": 9,
-                                    "start_line": 72
+                                    "start_line": 93
                                 },
                                 "While trying to retrieve the implicit argument 'range_check_ptr' in:"
                             ],
                             "start_col": 19,
-                            "start_line": 53
+                            "start_line": 74
                         },
                         "While expanding the reference 'range_check_ptr' in:"
                     ],
                     "start_col": 19,
-                    "start_line": 53
+                    "start_line": 74
                 }
             },
             "749": {
@@ -43704,36 +43704,36 @@
                 "hints": [],
                 "inst": {
                     "end_col": 60,
-                    "end_line": 69,
+                    "end_line": 90,
                     "input_file": {
                         "filename": "sha256.cairo"
                     },
                     "parent_location": [
                         {
                             "end_col": 54,
-                            "end_line": 53,
+                            "end_line": 74,
                             "input_file": {
                                 "filename": "sha256.cairo"
                             },
                             "parent_location": [
                                 {
                                     "end_col": 19,
-                                    "end_line": 72,
+                                    "end_line": 93,
                                     "input_file": {
                                         "filename": "sha256.cairo"
                                     },
                                     "start_col": 9,
-                                    "start_line": 72
+                                    "start_line": 93
                                 },
                                 "While trying to retrieve the implicit argument 'hash256_ptr' in:"
                             ],
                             "start_col": 36,
-                            "start_line": 53
+                            "start_line": 74
                         },
                         "While expanding the reference 'hash256_ptr' in:"
                     ],
                     "start_col": 23,
-                    "start_line": 69
+                    "start_line": 90
                 }
             },
             "751": {
@@ -43759,12 +43759,12 @@
                 "hints": [],
                 "inst": {
                     "end_col": 19,
-                    "end_line": 72,
+                    "end_line": 93,
                     "input_file": {
                         "filename": "sha256.cairo"
                     },
                     "start_col": 9,
-                    "start_line": 72
+                    "start_line": 93
                 }
             },
             "752": {
@@ -43790,24 +43790,24 @@
                 "hints": [],
                 "inst": {
                     "end_col": 60,
-                    "end_line": 69,
+                    "end_line": 90,
                     "input_file": {
                         "filename": "sha256.cairo"
                     },
                     "parent_location": [
                         {
                             "end_col": 23,
-                            "end_line": 77,
+                            "end_line": 98,
                             "input_file": {
                                 "filename": "sha256.cairo"
                             },
                             "start_col": 12,
-                            "start_line": 77
+                            "start_line": 98
                         },
                         "While expanding the reference 'hash256_ptr' in:"
                     ],
                     "start_col": 23,
-                    "start_line": 69
+                    "start_line": 90
                 }
             },
             "754": {
@@ -43833,24 +43833,24 @@
                 "hints": [],
                 "inst": {
                     "end_col": 60,
-                    "end_line": 75,
+                    "end_line": 96,
                     "input_file": {
                         "filename": "sha256.cairo"
                     },
                     "parent_location": [
                         {
                             "end_col": 33,
-                            "end_line": 77,
+                            "end_line": 98,
                             "input_file": {
                                 "filename": "sha256.cairo"
                             },
                             "start_col": 25,
-                            "start_line": 77
+                            "start_line": 98
                         },
                         "While expanding the reference 'data_ptr' in:"
                     ],
                     "start_col": 20,
-                    "start_line": 75
+                    "start_line": 96
                 }
             },
             "756": {
@@ -43876,12 +43876,12 @@
                 "hints": [],
                 "inst": {
                     "end_col": 64,
-                    "end_line": 77,
+                    "end_line": 98,
                     "input_file": {
                         "filename": "sha256.cairo"
                     },
                     "start_col": 35,
-                    "start_line": 77
+                    "start_line": 98
                 }
             },
             "758": {
@@ -43907,12 +43907,12 @@
                 "hints": [],
                 "inst": {
                     "end_col": 65,
-                    "end_line": 77,
+                    "end_line": 98,
                     "input_file": {
                         "filename": "sha256.cairo"
                     },
                     "start_col": 5,
-                    "start_line": 77
+                    "start_line": 98
                 }
             },
             "760": {
@@ -43938,12 +43938,12 @@
                 "hints": [],
                 "inst": {
                     "end_col": 52,
-                    "end_line": 79,
+                    "end_line": 100,
                     "input_file": {
                         "filename": "sha256.cairo"
                     },
                     "start_col": 9,
-                    "start_line": 79
+                    "start_line": 100
                 }
             },
             "762": {
@@ -43969,12 +43969,12 @@
                 "hints": [],
                 "inst": {
                     "end_col": 46,
-                    "end_line": 80,
+                    "end_line": 101,
                     "input_file": {
                         "filename": "sha256.cairo"
                     },
                     "start_col": 9,
-                    "start_line": 80
+                    "start_line": 101
                 }
             },
             "764": {
@@ -44000,12 +44000,12 @@
                 "hints": [],
                 "inst": {
                     "end_col": 32,
-                    "end_line": 81,
+                    "end_line": 102,
                     "input_file": {
                         "filename": "sha256.cairo"
                     },
                     "start_col": 9,
-                    "start_line": 81
+                    "start_line": 102
                 }
             },
             "766": {
@@ -44031,12 +44031,12 @@
                 "hints": [],
                 "inst": {
                     "end_col": 6,
-                    "end_line": 82,
+                    "end_line": 103,
                     "input_file": {
                         "filename": "sha256.cairo"
                     },
                     "start_col": 5,
-                    "start_line": 78
+                    "start_line": 99
                 }
             },
             "768": {
@@ -44062,36 +44062,36 @@
                 "hints": [],
                 "inst": {
                     "end_col": 34,
-                    "end_line": 53,
+                    "end_line": 74,
                     "input_file": {
                         "filename": "sha256.cairo"
                     },
                     "parent_location": [
                         {
                             "end_col": 34,
-                            "end_line": 53,
+                            "end_line": 74,
                             "input_file": {
                                 "filename": "sha256.cairo"
                             },
                             "parent_location": [
                                 {
                                     "end_col": 41,
-                                    "end_line": 83,
+                                    "end_line": 104,
                                     "input_file": {
                                         "filename": "sha256.cairo"
                                     },
                                     "start_col": 12,
-                                    "start_line": 83
+                                    "start_line": 104
                                 },
                                 "While trying to retrieve the implicit argument 'range_check_ptr' in:"
                             ],
                             "start_col": 19,
-                            "start_line": 53
+                            "start_line": 74
                         },
                         "While expanding the reference 'range_check_ptr' in:"
                     ],
                     "start_col": 19,
-                    "start_line": 53
+                    "start_line": 74
                 }
             },
             "769": {
@@ -44117,36 +44117,36 @@
                 "hints": [],
                 "inst": {
                     "end_col": 60,
-                    "end_line": 69,
+                    "end_line": 90,
                     "input_file": {
                         "filename": "sha256.cairo"
                     },
                     "parent_location": [
                         {
                             "end_col": 54,
-                            "end_line": 53,
+                            "end_line": 74,
                             "input_file": {
                                 "filename": "sha256.cairo"
                             },
                             "parent_location": [
                                 {
                                     "end_col": 41,
-                                    "end_line": 83,
+                                    "end_line": 104,
                                     "input_file": {
                                         "filename": "sha256.cairo"
                                     },
                                     "start_col": 12,
-                                    "start_line": 83
+                                    "start_line": 104
                                 },
                                 "While trying to retrieve the implicit argument 'hash256_ptr' in:"
                             ],
                             "start_col": 36,
-                            "start_line": 53
+                            "start_line": 74
                         },
                         "While expanding the reference 'hash256_ptr' in:"
                     ],
                     "start_col": 23,
-                    "start_line": 69
+                    "start_line": 90
                 }
             },
             "771": {
@@ -44172,24 +44172,24 @@
                 "hints": [],
                 "inst": {
                     "end_col": 60,
-                    "end_line": 75,
+                    "end_line": 96,
                     "input_file": {
                         "filename": "sha256.cairo"
                     },
                     "parent_location": [
                         {
                             "end_col": 33,
-                            "end_line": 83,
+                            "end_line": 104,
                             "input_file": {
                                 "filename": "sha256.cairo"
                             },
                             "start_col": 25,
-                            "start_line": 83
+                            "start_line": 104
                         },
                         "While expanding the reference 'data_ptr' in:"
                     ],
                     "start_col": 20,
-                    "start_line": 75
+                    "start_line": 96
                 }
             },
             "773": {
@@ -44215,12 +44215,12 @@
                 "hints": [],
                 "inst": {
                     "end_col": 40,
-                    "end_line": 83,
+                    "end_line": 104,
                     "input_file": {
                         "filename": "sha256.cairo"
                     },
                     "start_col": 35,
-                    "start_line": 83
+                    "start_line": 104
                 }
             },
             "775": {
@@ -44246,12 +44246,12 @@
                 "hints": [],
                 "inst": {
                     "end_col": 41,
-                    "end_line": 83,
+                    "end_line": 104,
                     "input_file": {
                         "filename": "sha256.cairo"
                     },
                     "start_col": 12,
-                    "start_line": 83
+                    "start_line": 104
                 }
             },
             "777": {
@@ -44277,12 +44277,12 @@
                 "hints": [],
                 "inst": {
                     "end_col": 42,
-                    "end_line": 83,
+                    "end_line": 104,
                     "input_file": {
                         "filename": "sha256.cairo"
                     },
                     "start_col": 5,
-                    "start_line": 83
+                    "start_line": 104
                 }
             }
         }
@@ -44442,7 +44442,7 @@
                     "__main__",
                     "__main__.main"
                 ],
-                "code": "data = program_input['data']\nids.data_len = len(data)\n\nids.init_state = init_state = segments.add()\nfor i, val in enumerate([0, 0, 0, 0, 0, 0, 0, 0]):\n    memory[init_state + i] = val\n\nids.data_ptr = data_ptr = segments.add()\nfor i, val in enumerate(data):\n    memory[data_ptr + i] = val",
+                "code": "from starkware.cairo.common.cairo_sha256.sha256_utils import IV\ndata = program_input['data']\nids.data_len = len(data)\n\nids.init_state = init_state = segments.add()\nfor i, val in enumerate(IV):\n    memory[init_state + i] = val\n\nids.data_ptr = data_ptr = segments.add()\nfor i, val in enumerate(data):\n    memory[data_ptr + i] = val\n\ndef ints_to_hex(int_list, byte_order='big', byte_size=4):\n    \"\"\"\n    Converts a list of integers into a concatenated bytearray and displays it as a hexadecimal string.\n\n    Args:\n        int_list (list[int]): List of integers to be converted.\n        byte_order (str): Byte order ('big' or 'little') for conversion. Default is 'big'.\n        byte_size (int): Number of bytes per integer. Default is 4 (32-bit).\n\n    Returns:\n        str: Hexadecimal representation of the concatenated bytearray.\n    \"\"\"\n    # Convert each integer to a bytearray and concatenate\n    result_bytes = bytearray()\n    for value in int_list:\n        result_bytes += value.to_bytes(byte_size, byteorder=byte_order)\n\n    # Convert to hexadecimal string\n    return result_bytes.hex()",
                 "flow_tracking_data": {
                     "ap_tracking": {
                         "group": 80,
@@ -44465,7 +44465,7 @@
                     "__main__",
                     "__main__.main"
                 ],
-                "code": "print(memory.get_range(ids.hash256_ptr_end - ids.SHA256_STATE_SIZE_FELTS, ids.SHA256_STATE_SIZE_FELTS)),",
+                "code": "print(ints_to_hex(memory.get_range(ids.hash256_ptr_end - ids.SHA256_STATE_SIZE_FELTS, ids.SHA256_STATE_SIZE_FELTS)))",
                 "flow_tracking_data": {
                     "ap_tracking": {
                         "group": 83,

@@ -17,16 +17,37 @@ func main{output_ptr: felt, range_check_ptr: felt, bitwise_ptr: BitwiseBuiltin*}
     local data_ptr: felt*;  // Pointer to start of data
     local init_state: felt*;  // Pointer to start of data
     %{
+        from starkware.cairo.common.cairo_sha256.sha256_utils import IV
         data = program_input['data']
         ids.data_len = len(data)
 
         ids.init_state = init_state = segments.add()
-        for i, val in enumerate([0, 0, 0, 0, 0, 0, 0, 0]):
+        for i, val in enumerate(IV):
             memory[init_state + i] = val
 
         ids.data_ptr = data_ptr = segments.add()
         for i, val in enumerate(data):
             memory[data_ptr + i] = val
+
+        def ints_to_hex(int_list, byte_order='big', byte_size=4):
+            """
+            Converts a list of integers into a concatenated bytearray and displays it as a hexadecimal string.
+
+            Args:
+                int_list (list[int]): List of integers to be converted.
+                byte_order (str): Byte order ('big' or 'little') for conversion. Default is 'big'.
+                byte_size (int): Number of bytes per integer. Default is 4 (32-bit).
+
+            Returns:
+                str: Hexadecimal representation of the concatenated bytearray.
+            """
+            # Convert each integer to a bytearray and concatenate
+            result_bytes = bytearray()
+            for value in int_list:
+                result_bytes += value.to_bytes(byte_size, byteorder=byte_order)
+
+            # Convert to hexadecimal string
+            return result_bytes.hex()
     %}
 
     // Number of hash blocks needed to hash data
@@ -44,7 +65,7 @@ func main{output_ptr: felt, range_check_ptr: felt, bitwise_ptr: BitwiseBuiltin*}
 
     let hash256_ptr_end = hash256_ptr;
 
-    %{ print(memory.get_range(ids.hash256_ptr_end - ids.SHA256_STATE_SIZE_FELTS, ids.SHA256_STATE_SIZE_FELTS)), %}
+    %{ print(ints_to_hex(memory.get_range(ids.hash256_ptr_end - ids.SHA256_STATE_SIZE_FELTS, ids.SHA256_STATE_SIZE_FELTS))) %}
 
     finalize_sha256(hash256_ptr_start, hash256_ptr_end);
     return ();
