@@ -1,1 +1,1 @@
-cairo-run --program compiled.json --layout starknet_with_keccak --print_info
+cairo-run --program compiled.json --layout recursive --print_info
