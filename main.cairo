@@ -65,10 +65,10 @@ func main{range_check_ptr, bitwise_ptr: BitwiseBuiltin*}() {
 
     let b64_body_hash: felt* = alloc();
     extract_bytes(headers, b64_body_hash, 141, 3, 152, 3);
-    let b64_len = (152 - 141) * 4 - 3 + 3;
+    let b64_body_hash_len = (152 - 141) * 4 - 3 + 3;
 
     let (local body_hash_bytes) = alloc();
-    let decoded_len = base64_decode(b64_body_hash, b64_len, body_hash_bytes);
+    let decoded_len = base64_decode(b64_body_hash, b64_body_hash_len, body_hash_bytes);
     let (header_body_hash) = uint256_from_u8_be(body_hash_bytes);
 
     let (local body_hash_ptr, local body_hash_len) = sha256(body, body_len);
@@ -80,6 +80,7 @@ func main{range_check_ptr, bitwise_ptr: BitwiseBuiltin*}() {
     let (local headers_hash_ptr, local headers_hash_len) = sha256(headers, headers_len);
     let (calculated_headers_hash) = uint256_from_u32_be(headers_hash_ptr);
 
+    // https://github.com/dlitz/pycrypto/blob/v2.7a1/lib/Crypto/Signature/PKCS1_v1_5.py#L173
     local expected_hash: Uint1024 = Uint1024(
         low=Uint512(
             low=calculated_headers_hash,
@@ -101,6 +102,13 @@ func main{range_check_ptr, bitwise_ptr: BitwiseBuiltin*}() {
 
     let eq = uint1024_eq(calculated_hash, expected_hash);
     assert eq = 1;
+
+    let (local domain) = alloc();
+    extract_bytes(headers, domain, 90, 0, 93, 3);
+    let domain_len = (93 - 90) * 4 - 0 + 3;
+
+    %{ print("domain: ", bytes(memory.get_range(ids.domain, ids.domain_len)).decode('utf-8')) %}
+    %{ print("body hash: ", hex((ids.header_body_hash.high << 128) + ids.header_body_hash.low)) %}
 
     return ();
 }
