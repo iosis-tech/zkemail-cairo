@@ -1,4 +1,4 @@
-%builtins range_check bitwise
+%builtins output range_check bitwise
 
 from base64 import base64_decode
 from extract import extract_bytes
@@ -6,13 +6,14 @@ from sha256 import sha256
 from starkware.cairo.common.alloc import alloc
 from starkware.cairo.common.bitwise import bitwise_and, bitwise_or
 from starkware.cairo.common.cairo_builtins import BitwiseBuiltin
+from starkware.cairo.common.memcpy import memcpy
 from starkware.cairo.common.registers import get_label_location
 from starkware.cairo.common.uint256 import Uint256, uint256_eq
 from uint1024 import Uint1024, uint1024_eq, uint1024_pow_mod_recursive
 from uint256 import uint256_from_u8_be, uint256_from_u32_be
 from uint512 import Uint512
 
-func main{range_check_ptr, bitwise_ptr: BitwiseBuiltin*}() {
+func main{output_ptr: felt*, range_check_ptr, bitwise_ptr: BitwiseBuiltin*}() {
     alloc_locals;
     %{
         def get_u256_u32(v):
@@ -68,7 +69,7 @@ func main{range_check_ptr, bitwise_ptr: BitwiseBuiltin*}() {
     let b64_body_hash_len = (152 - 141) * 4 - 3 + 3;
 
     let (local body_hash_bytes) = alloc();
-    let decoded_len = base64_decode(b64_body_hash, b64_body_hash_len, body_hash_bytes);
+    let body_hash_bytes_len = base64_decode(b64_body_hash, b64_body_hash_len, body_hash_bytes);
     let (header_body_hash) = uint256_from_u8_be(body_hash_bytes);
 
     let (local body_hash_ptr, local body_hash_len) = sha256(body, body_len);
@@ -109,6 +110,11 @@ func main{range_check_ptr, bitwise_ptr: BitwiseBuiltin*}() {
 
     %{ print("domain: ", bytes(memory.get_range(ids.domain, ids.domain_len)).decode('utf-8')) %}
     %{ print("body hash: ", hex((ids.header_body_hash.high << 128) + ids.header_body_hash.low)) %}
+
+    memcpy(output_ptr, domain, domain_len);
+    let output_ptr = output_ptr + domain_len;
+    memcpy(output_ptr, body_hash_bytes, body_hash_bytes_len);
+    let output_ptr = output_ptr + body_hash_bytes_len;
 
     return ();
 }
