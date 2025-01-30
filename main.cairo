@@ -2,6 +2,7 @@
 
 from base64 import base64_decode
 from extract import extract_bytes, bytes_len
+from pkcs1_v1_5 import pkcs_expected_hash
 from sha256 import sha256
 from starkware.cairo.common.alloc import alloc
 from starkware.cairo.common.bitwise import bitwise_and, bitwise_or
@@ -100,42 +101,7 @@ func main{output_ptr: felt*, range_check_ptr, bitwise_ptr: BitwiseBuiltin*}() {
     let (calculated_headers_hash) = uint256_from_u32_be(headers_hash_ptr);
 
     // https://github.com/dlitz/pycrypto/blob/v2.7a1/lib/Crypto/Signature/PKCS1_v1_5.py#L173
-    local expected_hash: Uint2048 = Uint2048(
-        low=Uint1024(
-            low=Uint512(
-                low=calculated_headers_hash,
-                high=Uint256(
-                    low=0x0d060960864801650304020105000420, high=0xFFFFFFFFFFFFFFFFFFFFFFFF00303130
-                ),
-            ),
-            high=Uint512(
-                low=Uint256(
-                    low=0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF, high=0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-                ),
-                high=Uint256(
-                    low=0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF, high=0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-                ),
-            ),
-        ),
-        high=Uint1024(
-            low=Uint512(
-                low=Uint256(
-                    low=0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF, high=0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-                ),
-                high=Uint256(
-                    low=0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF, high=0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-                ),
-            ),
-            high=Uint512(
-                low=Uint256(
-                    low=0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF, high=0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-                ),
-                high=Uint256(
-                    low=0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF, high=0x0001FFFFFFFFFFFFFFFFFFFFFFFFFFFF
-                ),
-            ),
-        ),
-    );
+    let expected_hash = pkcs_expected_hash(calculated_headers_hash);
 
     let (calculated_hash) = uint2048_pow_mod_recursive(sig, 65537, n);
 
