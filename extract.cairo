@@ -35,3 +35,9 @@ dw 0x1000000;
 dw 0x10000;
 dw 0x100;
 dw 0x1;
+
+func bytes_len{range_check_ptr, bitwise_ptr: BitwiseBuiltin*}(
+    a: felt, a_rem: felt, b: felt, b_rem: felt
+) -> felt {
+    return ((b - a) * 4 - a_rem + b_rem);
+}
