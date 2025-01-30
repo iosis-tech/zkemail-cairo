@@ -7,7 +7,7 @@ use mail_auth::{
     AuthenticatedMessage, DkimResult, MessageAuthenticator,
 };
 use regex::bytes::Regex;
-use rsa::{pkcs8::DecodePublicKey, traits::PublicKeyParts, RsaPublicKey};
+use rsa::{pkcs8::DecodePublicKey, traits::PublicKeyParts, BigUint, RsaPublicKey};
 
 const TEST_MESSAGE: &str = r#"Delivered-To: bartosz@herodotus.dev
 Received: by 2002:a17:907:1685:b0:ab6:41ea:5783 with SMTP id cx5csp230730ejd;
@@ -155,16 +155,16 @@ async fn main() {
 
         let rsa_public_key = RsaPublicKey::from_public_key_der(
             &BASE64_STANDARD
-                .decode(records[0][start_index + 2..end_index].to_vec())
+                .decode(&records[0][start_index + 2..end_index])
                 .unwrap(),
         )
         .unwrap();
 
-        println!("{}", rsa_public_key.n());
-        println!("{}", rsa_public_key.e());
+        println!("n: {}", rsa_public_key.n());
+        println!("e: {}", rsa_public_key.e());
 
         let signature_bytes = signature.signature();
-        println!("signature: {:?}", hex::encode(signature_bytes));
+        println!("signature: {}", BigUint::from_bytes_be(signature_bytes));
 
         let dkim_hdr_value = header.value.strip_signature();
         let headers =

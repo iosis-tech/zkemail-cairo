@@ -6,7 +6,6 @@ edition = "2021"
 [dependencies]
 tokio = { version = "1.16", features = ["full"] }
 mail-auth = { path = "../cairo-dkim/mail-auth"}
-hex = "0.4.3"
 regex = "1.11.1"
 rsa = "0.9.7"
 base64 = "0.22.1"
