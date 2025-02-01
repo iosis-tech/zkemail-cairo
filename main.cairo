@@ -18,12 +18,6 @@ from uint512 import Uint512
 func main{output_ptr: felt*, range_check_ptr, bitwise_ptr: BitwiseBuiltin*}() {
     alloc_locals;
     %{
-        def get_u256_u32(v):
-            ret = 0
-            for i, val in enumerate(v[::-1]):
-                ret += val << (32*i)
-            return ret
-
         def get_u512(v):
             return (v.high.high << 128*3) + (v.high.low << 128*2) + (v.low.high << 128*1) + (v.low.low << 128*0)
 
@@ -71,20 +65,21 @@ func main{output_ptr: felt*, range_check_ptr, bitwise_ptr: BitwiseBuiltin*}() {
     %{ segments.write_arg(ids.body, BODY) %}
     local body_len = nondet %{ len(BODY) %};
 
+    %{ advice = body_hash_advice %}
     let (local b64_body_hash) = alloc();
     extract_bytes(
         headers,
         b64_body_hash,
-        nondet %{ body_hash_advice[0][0] %},
-        nondet %{ body_hash_advice[0][1] %},
-        nondet %{ body_hash_advice[1][0] %},
-        nondet %{ body_hash_advice[1][1] %},
+        nondet %{ advice.a_quo %},
+        nondet %{ advice.a_rem %},
+        nondet %{ advice.b_quo %},
+        nondet %{ advice.b_rem %},
     );
     local b64_body_hash_len = bytes_len(
-        nondet %{ body_hash_advice[0][0] %},
-        nondet %{ body_hash_advice[0][1] %},
-        nondet %{ body_hash_advice[1][0] %},
-        nondet %{ body_hash_advice[1][1] %},
+        nondet %{ advice.a_quo %},
+        nondet %{ advice.a_rem %},
+        nondet %{ advice.b_quo %},
+        nondet %{ advice.b_rem %},
     );
 
     let (local body_hash_bytes) = alloc();
@@ -100,7 +95,6 @@ func main{output_ptr: felt*, range_check_ptr, bitwise_ptr: BitwiseBuiltin*}() {
     let (local headers_hash_ptr, local headers_hash_len) = sha256(headers, headers_len);
     let (calculated_headers_hash) = uint256_from_u32_be(headers_hash_ptr);
 
-    // https://github.com/dlitz/pycrypto/blob/v2.7a1/lib/Crypto/Signature/PKCS1_v1_5.py#L173
     let expected_hash = pkcs_expected_hash(calculated_headers_hash);
 
     let (calculated_hash) = uint2048_pow_mod_recursive(sig, 65537, n);
@@ -108,52 +102,55 @@ func main{output_ptr: felt*, range_check_ptr, bitwise_ptr: BitwiseBuiltin*}() {
     let eq = uint2048_eq(calculated_hash, expected_hash);
     assert eq = 1;
 
+    %{ advice = domain_advice %}
     let (local domain) = alloc();
     extract_bytes(
         headers,
         domain,
-        nondet %{ domain_advice[0][0] %},
-        nondet %{ domain_advice[0][1] %},
-        nondet %{ domain_advice[1][0] %},
-        nondet %{ domain_advice[1][1] %},
+        nondet %{ advice.a_quo %},
+        nondet %{ advice.a_rem %},
+        nondet %{ advice.b_quo %},
+        nondet %{ advice.b_rem %},
     );
     local domain_len = bytes_len(
-        nondet %{ domain_advice[0][0] %},
-        nondet %{ domain_advice[0][1] %},
-        nondet %{ domain_advice[1][0] %},
-        nondet %{ domain_advice[1][1] %},
+        nondet %{ advice.a_quo %},
+        nondet %{ advice.a_rem %},
+        nondet %{ advice.b_quo %},
+        nondet %{ advice.b_rem %},
     );
 
+    %{ advice = darn_advice %}
     let (local darn) = alloc();
     extract_bytes(
         headers,
         darn,
-        nondet %{ darn_advice[0][0] %},
-        nondet %{ darn_advice[0][1] %},
-        nondet %{ darn_advice[1][0] %},
-        nondet %{ darn_advice[1][1] %},
+        nondet %{ advice.a_quo %},
+        nondet %{ advice.a_rem %},
+        nondet %{ advice.b_quo %},
+        nondet %{ advice.b_rem %},
     );
     local darn_len = bytes_len(
-        nondet %{ darn_advice[0][0] %},
-        nondet %{ darn_advice[0][1] %},
-        nondet %{ darn_advice[1][0] %},
-        nondet %{ darn_advice[1][1] %},
+        nondet %{ advice.a_quo %},
+        nondet %{ advice.a_rem %},
+        nondet %{ advice.b_quo %},
+        nondet %{ advice.b_rem %},
     );
 
+    %{ advice = body_advice %}
     let (local body_str) = alloc();
     extract_bytes(
         body,
         body_str,
-        nondet %{ body_advice[0][0] %},
-        nondet %{ body_advice[0][1] %},
-        nondet %{ body_advice[1][0] %},
-        nondet %{ body_advice[1][1] %},
+        nondet %{ advice.a_quo %},
+        nondet %{ advice.a_rem %},
+        nondet %{ advice.b_quo %},
+        nondet %{ advice.b_rem %},
     );
     local body_str_len = bytes_len(
-        nondet %{ body_advice[0][0] %},
-        nondet %{ body_advice[0][1] %},
-        nondet %{ body_advice[1][0] %},
-        nondet %{ body_advice[1][1] %},
+        nondet %{ advice.a_quo %},
+        nondet %{ advice.a_rem %},
+        nondet %{ advice.b_quo %},
+        nondet %{ advice.b_rem %},
     );
 
     %{ print("domain: ", bytes(memory.get_range(ids.domain, ids.domain_len)).decode('utf-8')) %}

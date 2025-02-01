@@ -1,32 +1,29 @@
 use std::collections::HashMap;
 
 use cairo_vm::{
-    hint_processor::{
-        builtin_hint_processor::builtin_hint_processor_definition::HintProcessorData, hint_processor_definition::HintExtension,
-    },
+    hint_processor::builtin_hint_processor::builtin_hint_processor_definition::HintProcessorData,
     types::exec_scope::ExecutionScopes,
     vm::{errors::hint_errors::HintError, vm_core::VirtualMachine},
     Felt252,
 };
 
+pub mod advice;
+pub mod u1024;
+pub mod u2048;
+pub mod u256;
+pub mod u512;
 pub mod vars;
 
 pub type HintImpl = fn(&mut VirtualMachine, &mut ExecutionScopes, &HintProcessorData, &HashMap<String, Felt252>) -> Result<(), HintError>;
 
-/// Hint Extensions extend the current map of hints used by the VM.
-/// This behaviour achieves what the `vm_load_data` primitive does for cairo-lang
-/// and is needed to implement os hints like `vm_load_program`.
-pub type ExtensiveHintImpl =
-    fn(&mut VirtualMachine, &mut ExecutionScopes, &HintProcessorData, &HashMap<String, Felt252>) -> Result<HintExtension, HintError>;
-
 #[rustfmt::skip]
 pub fn hints() -> HashMap<String, HintImpl> {
     let mut hints = HashMap::<String, HintImpl>::new();
-    hints
-}
-
-#[rustfmt::skip]
-pub fn extensive_hints() -> HashMap<String, ExtensiveHintImpl> {
-    let mut hints = HashMap::<String, ExtensiveHintImpl>::new();
+    hints.insert(u1024::SET_U1024.into(), u1024::set_u1024);
+    hints.insert(u2048::HINT_U2048.into(), u2048::hint_u2048);
+    hints.insert(u2048::SET_U2048.into(), u2048::set_u2048);
+    hints.insert(u256::HINT_U256.into(), u256::hint_u256);
+    hints.insert(u256::SET_U256.into(), u256::set_u256);
+    hints.insert(u512::SET_U512.into(), u512::set_u512);
     hints
 }
