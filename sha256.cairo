@@ -14,12 +14,10 @@ func sha256{range_check_ptr: felt, bitwise_ptr: BitwiseBuiltin*}(
 ) -> (hash_ptr: felt*, hash_len: felt) {
     alloc_locals;
 
-    local init_state: felt*;  // Pointer to start of data
+    let (init_state: felt*) = alloc();
     %{
         from starkware.cairo.common.cairo_sha256.sha256_utils import IV
-        ids.init_state = init_state = segments.add()
-        for i, val in enumerate(IV):
-            memory[init_state + i] = val
+        memory.write_arg(ids.init_state, IV)
     %}
 
     // Number of hash blocks needed to hash data
@@ -44,13 +42,13 @@ func hash256_loop{range_check_ptr, hash256_ptr: felt*}(data_ptr: felt*, n) {
     let chunk = hash256_ptr;
     let hash256_ptr = hash256_ptr + SHA256_INPUT_CHUNK_SIZE_FELTS;
 
-    let hash256_state = hash256_ptr;
+    let state = hash256_ptr;
     let hash256_ptr = hash256_ptr + SHA256_STATE_SIZE_FELTS;
     %{
         from starkware.cairo.common.cairo_sha256.sha256_utils import (
             IV, compute_message_schedule, sha2_compress_function)
         hash256 = sha2_compress_function(
-            memory.get_range(ids.hash256_state, ids.SHA256_STATE_SIZE_FELTS),
+            memory.get_range(ids.state, ids.SHA256_STATE_SIZE_FELTS),
             compute_message_schedule(memory.get_range(ids.chunk, ids.SHA256_INPUT_CHUNK_SIZE_FELTS))
         )
         segments.write_arg(ids.hash256_ptr, hash256)

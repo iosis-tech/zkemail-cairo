@@ -9,13 +9,13 @@ pub mod dkim;
 pub mod hint_processor;
 pub mod types;
 
-use std::{env, path::PathBuf};
+use std::path::PathBuf;
 
 use cairo_vm::{
     cairo_run::{self, cairo_run_program},
     types::{layout::CairoLayoutParams, layout_name::LayoutName, program::Program},
 };
-use clap::Parser;
+use clap::{Parser, ValueHint};
 use hint_processor::CustomHintProcessor;
 use tracing::debug;
 use types::{error::Error, RunInput};
@@ -23,10 +23,10 @@ use types::{error::Error, RunInput};
 #[derive(Parser, Debug)]
 #[clap(author, version, about, long_about = None)]
 struct Args {
+    #[clap(value_parser, value_hint=ValueHint::FilePath)]
+    filename: PathBuf,
     #[structopt(long = "program_input")]
     program_input: PathBuf,
-    #[structopt(long = "program_output")]
-    program_output: PathBuf,
     #[clap(long = "trace_file", value_parser)]
     trace_file: Option<PathBuf>,
     #[structopt(long = "print_output")]
@@ -85,11 +85,7 @@ async fn main() -> Result<(), Error> {
         ..Default::default()
     };
 
-    // Locate the compiled program file in the `OUT_DIR` folder.
-    let out_dir = PathBuf::from(env::var("OUT_DIR").expect("OUT_DIR is not set"));
-    let program_file_path = out_dir.join("cairo").join("compiled.json");
-
-    let program_file = std::fs::read(program_file_path).map_err(Error::IO)?;
+    let program_file = std::fs::read(args.filename).map_err(Error::IO)?;
     let program_inputs: RunInput = serde_json::from_slice(&std::fs::read(args.program_input).map_err(Error::IO)?)?;
 
     // Load the Program

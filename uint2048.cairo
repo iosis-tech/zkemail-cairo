@@ -78,50 +78,50 @@ func uint2048_mul{range_check_ptr}(a: Uint2048, b: Uint2048) -> (c: Uint2048, d:
 
 func uint2048_mul_div_mod{range_check_ptr, bitwise_ptr: BitwiseBuiltin*}(
     a: Uint2048, b: Uint2048, div: Uint2048
-) -> (quotient_low: Uint2048, quotient_high: Uint2048, remainder: Uint2048) {
+) -> (quo_low: Uint2048, quo_high: Uint2048, rem: Uint2048) {
     alloc_locals;
 
     // Compute a * b (2048 bits).
     let (local ab_low, local ab_high) = uint2048_mul(a, b);
 
-    // Guess the quotient and remainder of (a * b) / d.
-    local quotient_low: Uint2048;
-    local quotient_high: Uint2048;
-    local remainder: Uint2048;
+    // Guess the quo and rem of (a * b) / d.
+    local quo_low: Uint2048;
+    local quo_high: Uint2048;
+    local rem: Uint2048;
     %{
         a = get_u2048(ids.a)
         b = get_u2048(ids.b)
         div = get_u2048(ids.div)
 
-        quotient, remainder = divmod(a * b, div)
+        quo, rem = divmod(a * b, div)
 
-        set_u2048(ids.quotient_low, (quotient >> 2048*0) & ((1 << 2048) - 1))
-        set_u2048(ids.quotient_high, (quotient >> 2048*1) & ((1 << 2048) - 1))
-        set_u2048(ids.remainder, remainder)
+        set_u2048(ids.quo_low, (quo >> 2048*0) & ((1 << 2048) - 1))
+        set_u2048(ids.quo_high, (quo >> 2048*1) & ((1 << 2048) - 1))
+        set_u2048(ids.rem, rem)
     %}
 
-    // Compute x = quotient * div + remainder.
-    uint2048_check(quotient_high);
-    let (quotient_mod10, quotient_mod11) = uint2048_mul(quotient_high, div);
-    uint2048_check(quotient_low);
-    let (quotient_mod00, quotient_mod01) = uint2048_mul(quotient_low, div);
+    // Compute x = quo * div + rem.
+    uint2048_check(quo_high);
+    let (quo_mod10, quo_mod11) = uint2048_mul(quo_high, div);
+    uint2048_check(quo_low);
+    let (quo_mod00, quo_mod01) = uint2048_mul(quo_low, div);
     // Since x should equal a * b, the high 256 bits must be zero.
     let (res) = uint2048_zero();
-    assert quotient_mod11 = res;
+    assert quo_mod11 = res;
 
     // The low 256 bits of x must be ab_low.
-    uint2048_check(remainder);
-    let (x0, carry0) = uint2048_add(quotient_mod00, remainder, 0);
+    uint2048_check(rem);
+    let (x0, carry0) = uint2048_add(quo_mod00, rem, 0);
     assert x0 = ab_low;
 
-    let (x1, carry1) = uint2048_add(quotient_mod01, quotient_mod10, 0);
+    let (x1, carry1) = uint2048_add(quo_mod01, quo_mod10, 0);
     assert carry1 = 0;
     let (x1, carry2) = uint2048_add(x1, res, carry0);
     assert carry2 = 0;
 
     assert x1 = ab_high;
 
-    return (quotient_low=quotient_low, quotient_high=quotient_high, remainder=remainder);
+    return (quo_low=quo_low, quo_high=quo_high, rem=rem);
 }
 
 func uint2048_pow_mod_recursive{range_check_ptr, bitwise_ptr: BitwiseBuiltin*}(
