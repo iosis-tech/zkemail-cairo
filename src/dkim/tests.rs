@@ -9,6 +9,8 @@ use mail_auth::{
 use regex::bytes::Regex;
 use rsa::{pkcs8::DecodePublicKey, traits::PublicKeyParts, BigUint, RsaPublicKey};
 
+use crate::dkim::pad_sha256;
+
 const TEST_MESSAGE: &str = r#"Delivered-To: bartosz@herodotus.dev
 Received: by 2002:a17:906:710f:b0:ab6:41ea:5783 with SMTP id x15csp397821ejj;
         Thu, 30 Jan 2025 11:13:40 -0800 (PST)
@@ -110,7 +112,7 @@ async fn dkim_test() {
         cb.canonical_body(authenticated_message.raw_body(), *l).write(&mut body_bytes);
 
         let body_len = body_bytes.len();
-        preprocess(&mut body_bytes);
+        pad_sha256(&mut body_bytes);
 
         println!(
             "body: {:?}",
@@ -168,7 +170,7 @@ async fn dkim_test() {
         let mut header_bytes = Vec::with_capacity(1024);
         signature.ch.canonicalize_headers(headers, &mut header_bytes);
 
-        preprocess(&mut header_bytes);
+        pad_sha256(&mut header_bytes);
 
         let re = Regex::new(r"bh=([A-Za-z0-9+/=]+);").unwrap();
         let caps = re.captures(&header_bytes).unwrap();
@@ -211,17 +213,4 @@ async fn dkim_test() {
 
     // Make sure all signatures passed verification
     assert!(result.iter().all(|s| s.result() == &DkimResult::Pass));
-}
-
-fn preprocess(message: &mut Vec<u8>) {
-    let length = (message.len() * 8) as u64;
-    message.push(0x80);
-
-    while ((message.len() * 8) + 64) % 512 != 0 {
-        message.push(0x00);
-    }
-
-    message.extend_from_slice(&length.to_be_bytes());
-
-    assert!((message.len() * 8) % 512 == 0, "Padding did not complete properly!");
 }

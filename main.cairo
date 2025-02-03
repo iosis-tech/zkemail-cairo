@@ -81,23 +81,6 @@ func main{output_ptr: felt*, range_check_ptr, bitwise_ptr: BitwiseBuiltin*}() {
         nondet %{ advice.b_rem %},
     );
 
-    %{ advice = dkim_input.darn_advice %}
-    let (local darn) = alloc();
-    extract_bytes(
-        headers,
-        darn,
-        nondet %{ advice.a_quo %},
-        nondet %{ advice.a_rem %},
-        nondet %{ advice.b_quo %},
-        nondet %{ advice.b_rem %},
-    );
-    local darn_len = bytes_len(
-        nondet %{ advice.a_quo %},
-        nondet %{ advice.a_rem %},
-        nondet %{ advice.b_quo %},
-        nondet %{ advice.b_rem %},
-    );
-
     %{ advice = dkim_input.body_advice %}
     let (local body_str) = alloc();
     extract_bytes(
@@ -116,18 +99,12 @@ func main{output_ptr: felt*, range_check_ptr, bitwise_ptr: BitwiseBuiltin*}() {
     );
 
     %{ print("domain: ", bytes(memory.get_range(ids.domain, ids.domain_len)).decode('utf-8')) %}
-    %{ print("darn: ", bytes(memory.get_range(ids.darn, ids.darn_len)).decode('utf-8')) %}
     %{ print("body_str: ", bytes(memory.get_range(ids.body_str, ids.body_str_len)).decode('utf-8')) %}
 
     // assert [output_ptr] = domain_len;
     // let output_ptr = output_ptr + 1;
     // memcpy(output_ptr, domain, domain_len);
     // let output_ptr = output_ptr + domain_len;
-
-    // assert [output_ptr] = darn_len;
-    // let output_ptr = output_ptr + 1;
-    // memcpy(output_ptr, darn, darn_len);
-    // let output_ptr = output_ptr + darn_len;
 
     // assert [output_ptr] = body_str_len;
     // let output_ptr = output_ptr + 1;

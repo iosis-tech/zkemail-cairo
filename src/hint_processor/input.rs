@@ -154,21 +154,6 @@ impl CustomHintProcessor {
     }
 }
 
-pub const HINT_SET_DARN_ADVICE: &str = "advice = dkim_input.darn_advice";
-
-impl CustomHintProcessor {
-    pub fn hint_set_darn_advice(
-        &mut self,
-        _vm: &mut VirtualMachine,
-        exec_scopes: &mut ExecutionScopes,
-        _hint_data: &HintProcessorData,
-        _constants: &HashMap<String, Felt252>,
-    ) -> Result<(), HintError> {
-        exec_scopes.insert_value::<Advice>(vars::scopes::ADVICE, self.private_inputs.darn_advice.clone());
-        Ok(())
-    }
-}
-
 pub const HINT_SET_BODY_ADVICE: &str = "advice = dkim_input.body_advice";
 
 impl CustomHintProcessor {

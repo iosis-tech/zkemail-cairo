@@ -78,7 +78,6 @@ impl HintProcessorLogic for CustomHintProcessor {
                 input::HINT_SET_BODY => self.hint_set_body(vm, exec_scopes, hpd, constants),
                 input::HINT_SET_BODY_LEN => self.hint_set_body_len(vm, exec_scopes, hpd, constants),
                 input::HINT_SET_BODY_ADVICE => self.hint_set_body_advice(vm, exec_scopes, hpd, constants),
-                input::HINT_SET_DARN_ADVICE => self.hint_set_darn_advice(vm, exec_scopes, hpd, constants),
                 input::HINT_SET_DOMAIN_ADVICE => self.hint_set_domain_advice(vm, exec_scopes, hpd, constants),
                 input::HINT_SET_BODY_HASH_ADVICE => self.hint_set_body_hash_advice(vm, exec_scopes, hpd, constants),
                 output::PRINT_DOMAIN => self.print_domain(vm, exec_scopes, hpd, constants),

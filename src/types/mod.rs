@@ -16,7 +16,6 @@ pub struct RunInput {
     pub body_advice: Advice,
     pub body_hash_advice: Advice,
     pub domain_advice: Advice,
-    pub darn_advice: Advice,
 }
 
 #[derive(Debug, Serialize, Deserialize, Clone)]

@@ -3,9 +3,7 @@
 #![warn(unused_crate_dependencies)]
 #![forbid(unsafe_code)]
 
-#[cfg(test)]
 pub mod dkim;
-
 pub mod hint_processor;
 pub mod types;
 
@@ -16,9 +14,11 @@ use cairo_vm::{
     types::{layout::CairoLayoutParams, layout_name::LayoutName, program::Program},
 };
 use clap::{Parser, ValueHint};
+use dkim::parse_dkim;
 use hint_processor::CustomHintProcessor;
+use mail_auth::{AuthenticatedMessage, MessageAuthenticator};
 use tracing::debug;
-use types::{error::Error, RunInput};
+use types::error::Error;
 
 #[derive(Parser, Debug)]
 #[clap(author, version, about, long_about = None)]
@@ -42,6 +42,8 @@ struct Args {
     cairo_layout_params_file: Option<PathBuf>,
     #[structopt(long = "proof_mode")]
     proof_mode: bool,
+    #[structopt(long = "raw_mail_file")]
+    raw_mail_file: PathBuf,
     #[structopt(long = "secure_run")]
     secure_run: Option<bool>,
     #[clap(long = "air_public_input", requires = "proof_mode")]
@@ -86,7 +88,11 @@ async fn main() -> Result<(), Error> {
     };
 
     let program_file = std::fs::read(args.filename).map_err(Error::IO)?;
-    let program_inputs: RunInput = serde_json::from_slice(&std::fs::read(args.program_input).map_err(Error::IO)?)?;
+    let raw_mail = std::fs::read(args.raw_mail_file).map_err(Error::IO)?;
+
+    let authenticator = MessageAuthenticator::new_cloudflare().unwrap();
+    let authenticated_message = AuthenticatedMessage::parse(&raw_mail).unwrap();
+    let program_inputs = parse_dkim(&authenticator, &authenticated_message).await?;
 
     // Load the Program
     let program = Program::from_bytes(&program_file, Some(cairo_run_config.entrypoint))?;
