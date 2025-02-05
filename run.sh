@@ -1,1 +1,0 @@
-cairo-run --program compiled.json --layout recursive --print_info
