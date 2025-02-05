@@ -25,8 +25,6 @@ use types::error::Error;
 struct Args {
     #[clap(value_parser, value_hint=ValueHint::FilePath)]
     filename: PathBuf,
-    #[structopt(long = "program_input")]
-    program_input: PathBuf,
     #[clap(long = "trace_file", value_parser)]
     trace_file: Option<PathBuf>,
     #[structopt(long = "print_output")]

@@ -19,3 +19,5 @@ target/
 *.zip
 *.txt
 *.json
+
+!examples/*
