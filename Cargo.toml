@@ -9,7 +9,8 @@ cairo-type-derive = { git = "https://github.com/keep-starknet-strange/snos.git",
 cairo-vm = { git = "https://github.com/lambdaclass/cairo-vm", rev = "62804bcbf58b436a8986e7da0ee80333400b1ffb", features = ["extensive_hints", "clap", "cairo-1-hints"] }
 clap = { version = "4.3.10", features = ["derive"] }
 generic-array = { version = "0.14.7", default-features = false }
-mail-auth = { path = "../cairo-dkim/mail-auth"}
+mailparse = "0.14"
+cfdkim = { path = "../dkim/" }
 num-bigint = { version = "0.4.6", features = ["serde"] }
 num-integer = "0.1.46"
 regex = "1.11.1"
@@ -22,3 +23,5 @@ thiserror = "1.0.64"
 tokio = { version = "1.16", features = ["full"] }
 tracing = "0.1"
 tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+slog = "2.7.0"
+trust-dns-resolver = "0.23.2"

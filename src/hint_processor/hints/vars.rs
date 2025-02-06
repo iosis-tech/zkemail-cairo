@@ -8,6 +8,7 @@ pub mod ids {
     pub const BODY_STR_LEN: &str = "body_str_len";
     pub const BODY_STR: &str = "body_str";
     pub const BODY: &str = "body";
+    pub const BODY_LEN: &str = "body_len";
     pub const C_IN: &str = "c_in";
     pub const CARRY_HIGH: &str = "carry_high";
     pub const CARRY_LOW: &str = "carry_low";
