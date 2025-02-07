@@ -1,87 +1,41 @@
-use std::borrow::Cow;
+use std::sync::Arc;
 
-use base64::{prelude::BASE64_STANDARD, Engine};
-use mail_auth::{
-    common::{headers::Writable, verify::VerifySignature},
-    dkim::verify::Verifier,
-    AuthenticatedMessage, MessageAuthenticator,
-};
+use base64::{engine::general_purpose, Engine};
+use cfdkim::{dns, header::HEADER, parser, public_key, validate_header, DKIMError};
+use mailparse::MailHeaderMap;
 use num_bigint::BigUint;
 use regex::bytes::Regex;
-use rsa::{pkcs8::DecodePublicKey, traits::PublicKeyParts, RsaPublicKey};
+use rsa::traits::PublicKeyParts;
+use trust_dns_resolver::TokioAsyncResolver;
+
+pub mod body;
+pub mod headers;
 
 use crate::types::{error::Error, Advice, RunInput};
 
-#[cfg(test)]
-pub mod tests;
+pub async fn parse_dkim(email: mailparse::ParsedMail<'_>) -> Result<RunInput, Error> {
+    let logger = slog::Logger::root(slog::Discard, slog::o!());
 
-pub async fn parse_dkim(authenticator: &MessageAuthenticator, authenticated_message: &AuthenticatedMessage<'_>) -> Result<RunInput, Error> {
-    // limit inputs to single dkim verification
-    let (cb, _ha, l, _bh) = authenticated_message.body_hashes.first().unwrap();
+    let dkim_headers = email.headers.get_all_headers(HEADER);
+    let dkim_header = dkim_headers.first().unwrap();
+    let dkim = validate_header(&String::from_utf8_lossy(dkim_header.get_value_raw())).unwrap();
 
-    let mut body_bytes = Vec::with_capacity(1024);
-    cb.canonical_body(authenticated_message.raw_body(), *l).write(&mut body_bytes);
-    let body_len = body_bytes.len();
-    pad_sha256(&mut body_bytes);
+    let (header_canonicalization_type, body_canonicalization_type) = parser::parse_canonicalization(dkim.get_tag("c")).unwrap();
+
+    let mut body_bytes = body::compute_body_bytes(body_canonicalization_type.clone(), dkim.get_tag("l"), &email).unwrap();
 
     let body_advice = Advice {
         a_quo: 0,
         a_rem: 0,
-        b_quo: body_len as u32 / 4,
-        b_rem: body_len as u32 % 4,
+        b_quo: body_bytes.len() as u32 / 4,
+        b_rem: body_bytes.len() as u32 % 4,
     };
 
-    let header = authenticated_message.dkim_headers.first().unwrap();
-    let signature = header.header.as_ref().unwrap();
-    let txt_lookup = authenticator.0.txt_lookup(signature.domain_key()).await.unwrap();
+    pad_sha256(&mut body_bytes);
 
-    let records: Vec<_> = txt_lookup
-        .as_lookup()
-        .record_iter()
-        .filter_map(|r| {
-            let txt_data = r.data()?.as_txt()?.txt_data();
-            match txt_data.len() {
-                1 => Some(Cow::from(txt_data[0].as_ref())),
-                0 => None,
-                _ => {
-                    let mut entry = Vec::with_capacity(255 * txt_data.len());
-                    for data in txt_data {
-                        entry.extend_from_slice(data);
-                    }
-                    Some(Cow::from(entry))
-                }
-            }
-        })
-        .collect();
-
-    let re = Regex::new(r"p=([a-zA-Z0-9+/=]+)").unwrap();
-    let caps = re.captures(&records[0]).unwrap();
-
-    let start_index = caps.get(0).unwrap().start();
-    let end_index = caps.get(0).unwrap().end();
-
-    let rsa_public_key =
-        RsaPublicKey::from_public_key_der(&BASE64_STANDARD.decode(&records[0][start_index + 2..end_index]).unwrap()).unwrap();
-
-    let dkim_hdr_value = header.value.strip_signature();
-    let headers = authenticated_message.signed_headers(&signature.h, header.name, &dkim_hdr_value);
-    let mut header_bytes = Vec::with_capacity(1024);
-    signature.ch.canonicalize_headers(headers, &mut header_bytes);
-
+    let mut header_bytes =
+        headers::compute_headers_bytes(header_canonicalization_type.clone(), &dkim.get_required_tag("h"), &dkim, &email).unwrap();
     pad_sha256(&mut header_bytes);
-
-    let re = Regex::new(r"bh=([A-Za-z0-9+/=]+);").unwrap();
-    let caps = re.captures(&header_bytes).unwrap();
-
-    let start_index = caps.get(0).unwrap().start() + 3;
-    let end_index = caps.get(0).unwrap().end() - 1;
-
-    let body_hash_advice = Advice {
-        a_quo: start_index as u32 / 4,
-        a_rem: start_index as u32 % 4,
-        b_quo: end_index as u32 / 4,
-        b_rem: end_index as u32 % 4,
-    };
 
     let re = Regex::new(r"d=([a-zA-Z0-9.-]+);").unwrap();
     let caps = re.captures(&header_bytes).unwrap();
@@ -96,20 +50,57 @@ pub async fn parse_dkim(authenticator: &MessageAuthenticator, authenticated_mess
         b_rem: end_index as u32 % 4,
     };
 
+    let re = Regex::new(r"bh=([A-Za-z0-9+/=]+);").unwrap();
+    let caps = re.captures(&header_bytes).unwrap();
+
+    let start_index = caps.get(0).unwrap().start() + 3;
+    let end_index = caps.get(0).unwrap().end() - 1;
+
+    let body_hash_advice = Advice {
+        a_quo: start_index as u32 / 4,
+        a_rem: start_index as u32 % 4,
+        b_quo: end_index as u32 / 4,
+        b_rem: end_index as u32 % 4,
+    };
+
+    let resolver = TokioAsyncResolver::tokio_from_system_conf()
+        .map_err(|err| DKIMError::UnknownInternalError(format!("failed to create DNS resolver: {}", err)))
+        .unwrap();
+    let resolver = dns::from_tokio_resolver(resolver);
+
+    let public_key = public_key::retrieve_public_key(
+        &logger,
+        Arc::clone(&resolver),
+        dkim.get_required_tag("d"),
+        dkim.get_required_tag("s"),
+    )
+    .await
+    .unwrap();
+
+    let n = match public_key {
+        cfdkim::DkimPublicKey::Rsa(rsa) => rsa.n().to_owned(),
+        _ => panic!(""),
+    };
+
+    let signature = general_purpose::STANDARD
+        .decode(dkim.get_required_tag("b"))
+        .map_err(|err| DKIMError::SignatureSyntaxError(format!("failed to decode signature: {}", err)))
+        .unwrap();
+
     Ok(RunInput {
         body: body_bytes
             .chunks(4)
             .map(|chunk| u32::from_be_bytes(chunk.try_into().unwrap()))
             .collect::<Vec<u32>>(),
-        body_advice,
         body_hash_advice,
         domain_advice,
+        body_advice,
         headers: header_bytes
             .chunks(4)
             .map(|chunk| u32::from_be_bytes(chunk.try_into().unwrap()))
             .collect::<Vec<u32>>(),
-        n: BigUint::from_bytes_be(&rsa_public_key.n().to_bytes_be()),
-        signature: BigUint::from_bytes_be(signature.signature()),
+        n: BigUint::from_bytes_be(&n.to_bytes_be()),
+        signature: BigUint::from_bytes_be(&signature),
     })
 }
 

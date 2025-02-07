@@ -99,7 +99,7 @@ func main{output_ptr: felt*, range_check_ptr, bitwise_ptr: BitwiseBuiltin*}() {
     );
 
     %{ print("domain: ", bytes(memory.get_range(ids.domain, ids.domain_len)).decode('utf-8')) %}
-    %{ print("body_str: ", bytes(memory.get_range(ids.body_str, ids.body_str_len)).decode('utf-8')) %}
+    %{ print("body: ", bytes(memory.get_range(ids.body_str, ids.body_str_len)).decode('utf-8')) %}
 
     // assert [output_ptr] = domain_len;
     // let output_ptr = output_ptr + 1;

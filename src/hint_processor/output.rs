@@ -56,10 +56,10 @@ impl CustomHintProcessor {
     }
 }
 
-pub const PRINT_BODY_STR: &str = "print(\"body_str: \", bytes(memory.get_range(ids.body_str, ids.body_str_len)).decode('utf-8'))";
+pub const PRINT_BODY: &str = "print(\"body: \", bytes(memory.get_range(ids.body_str, ids.body_str_len)).decode('utf-8'))";
 
 impl CustomHintProcessor {
-    pub fn print_body_str(
+    pub fn print_body(
         &mut self,
         vm: &mut VirtualMachine,
         _exec_scopes: &mut ExecutionScopes,
@@ -73,7 +73,7 @@ impl CustomHintProcessor {
             .into_iter()
             .map(|x| *x.to_bytes_be().last().unwrap())
             .collect();
-        println!("body_str: {}", String::from_utf8_lossy(&bytes));
+        println!("body: {}", String::from_utf8_lossy(&bytes));
         Ok(())
     }
 }

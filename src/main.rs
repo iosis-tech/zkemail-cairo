@@ -15,8 +15,8 @@ use cairo_vm::{
 };
 use clap::{Parser, ValueHint};
 use dkim::parse_dkim;
+// use dkim::parse_dkim;
 use hint_processor::CustomHintProcessor;
-use mail_auth::{AuthenticatedMessage, MessageAuthenticator};
 use tracing::debug;
 use types::error::Error;
 
@@ -88,14 +88,12 @@ async fn main() -> Result<(), Error> {
     let program_file = std::fs::read(args.filename).map_err(Error::IO)?;
     let raw_mail = std::fs::read(args.raw_mail_file).map_err(Error::IO)?;
 
-    let authenticator = MessageAuthenticator::new_cloudflare().unwrap();
-    let authenticated_message = AuthenticatedMessage::parse(&raw_mail).unwrap();
-    let program_inputs = parse_dkim(&authenticator, &authenticated_message).await?;
-
     // Load the Program
     let program = Program::from_bytes(&program_file, Some(cairo_run_config.entrypoint))?;
+    let email = mailparse::parse_mail(&raw_mail).unwrap();
+    let input = parse_dkim(email).await?;
 
-    let mut hint_processor = CustomHintProcessor::new(program_inputs);
+    let mut hint_processor = CustomHintProcessor::new(input);
     let mut cairo_runner = cairo_run_program(&program, &cairo_run_config, &mut hint_processor).unwrap();
 
     debug!("{:?}", cairo_runner.get_execution_resources());

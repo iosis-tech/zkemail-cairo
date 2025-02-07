@@ -71,18 +71,18 @@ impl HintProcessorLogic for CustomHintProcessor {
             let hint_code = hpd.code.as_str();
 
             let res = match hint_code {
-                input::HINT_SET_SIGNATURE => self.hint_set_signature(vm, exec_scopes, hpd, constants),
-                input::HINT_SET_N => self.hint_set_n(vm, exec_scopes, hpd, constants),
+                input::HINT_SET_BODY => self.hint_set_body(vm, exec_scopes, hpd, constants),
+                input::HINT_SET_BODY_ADVICE => self.hint_set_body_advice(vm, exec_scopes, hpd, constants),
+                input::HINT_SET_BODY_HASH_ADVICE => self.hint_set_body_hash_advice(vm, exec_scopes, hpd, constants),
+                input::HINT_SET_BODY_LEN => self.hint_set_body_len(vm, exec_scopes, hpd, constants),
+                input::HINT_SET_DOMAIN_ADVICE => self.hint_set_domain_advice(vm, exec_scopes, hpd, constants),
                 input::HINT_SET_HEADERS => self.hint_set_headers(vm, exec_scopes, hpd, constants),
                 input::HINT_SET_HEADERS_LEN => self.hint_set_headers_len(vm, exec_scopes, hpd, constants),
-                input::HINT_SET_BODY => self.hint_set_body(vm, exec_scopes, hpd, constants),
-                input::HINT_SET_BODY_LEN => self.hint_set_body_len(vm, exec_scopes, hpd, constants),
-                input::HINT_SET_BODY_ADVICE => self.hint_set_body_advice(vm, exec_scopes, hpd, constants),
-                input::HINT_SET_DOMAIN_ADVICE => self.hint_set_domain_advice(vm, exec_scopes, hpd, constants),
-                input::HINT_SET_BODY_HASH_ADVICE => self.hint_set_body_hash_advice(vm, exec_scopes, hpd, constants),
-                output::PRINT_DOMAIN => self.print_domain(vm, exec_scopes, hpd, constants),
+                input::HINT_SET_N => self.hint_set_n(vm, exec_scopes, hpd, constants),
+                input::HINT_SET_SIGNATURE => self.hint_set_signature(vm, exec_scopes, hpd, constants),
+                output::PRINT_BODY => self.print_body(vm, exec_scopes, hpd, constants),
                 output::PRINT_DARN => self.print_darn(vm, exec_scopes, hpd, constants),
-                output::PRINT_BODY_STR => self.print_body_str(vm, exec_scopes, hpd, constants),
+                output::PRINT_DOMAIN => self.print_domain(vm, exec_scopes, hpd, constants),
                 _ => Err(HintError::UnknownHint(hint_code.to_string().into_boxed_str())),
             };
 
