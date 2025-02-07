@@ -20,3 +20,5 @@ target/
 *.txt
 *.json
 *.eml
+
+venv/

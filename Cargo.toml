@@ -1,5 +1,5 @@
 [package]
-name = "cairo-rsa"
+name = "zkemail-cairo"
 version = "0.1.0"
 edition = "2021"
 
@@ -7,10 +7,10 @@ edition = "2021"
 base64 = "0.22.1"
 cairo-type-derive = { git = "https://github.com/keep-starknet-strange/snos.git", rev = "35a300a10d2107482ada440b5025ee2f651afbd4" }
 cairo-vm = { git = "https://github.com/lambdaclass/cairo-vm", rev = "62804bcbf58b436a8986e7da0ee80333400b1ffb", features = ["extensive_hints", "clap", "cairo-1-hints"] }
+cfdkim = { path = "../dkim/" }
 clap = { version = "4.3.10", features = ["derive"] }
 generic-array = { version = "0.14.7", default-features = false }
 mailparse = "0.14"
-cfdkim = { path = "../dkim/" }
 num-bigint = { version = "0.4.6", features = ["serde"] }
 num-integer = "0.1.46"
 regex = "1.11.1"
@@ -19,9 +19,12 @@ serde = "1.0.215"
 serde_json = { version = "1.0.132", features = ["arbitrary_precision"] }
 serde_with = "3.12.0"
 sha2 = { version = "0.10.7", features = ["compress"], default-features = false }
+slog = "2.7.0"
 thiserror = "1.0.64"
 tokio = { version = "1.16", features = ["full"] }
 tracing = "0.1"
 tracing-subscriber = { version = "0.3", features = ["env-filter"] }
-slog = "2.7.0"
 trust-dns-resolver = "0.23.2"
+
+[dev-dependencies]
+rand_chacha = "0.3.1"

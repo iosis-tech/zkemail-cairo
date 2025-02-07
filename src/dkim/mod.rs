@@ -1,25 +1,15 @@
-use std::sync::Arc;
-
 use base64::{engine::general_purpose, Engine};
-use cfdkim::{dns, header::HEADER, parser, public_key, validate_header, DKIMError};
-use mailparse::MailHeaderMap;
+use cfdkim::{header::DKIMHeader, parser, DKIMError, DkimPublicKey};
 use num_bigint::BigUint;
 use regex::bytes::Regex;
 use rsa::traits::PublicKeyParts;
-use trust_dns_resolver::TokioAsyncResolver;
 
 pub mod body;
 pub mod headers;
 
 use crate::types::{error::Error, Advice, RunInput};
 
-pub async fn parse_dkim(email: mailparse::ParsedMail<'_>) -> Result<RunInput, Error> {
-    let logger = slog::Logger::root(slog::Discard, slog::o!());
-
-    let dkim_headers = email.headers.get_all_headers(HEADER);
-    let dkim_header = dkim_headers.first().unwrap();
-    let dkim = validate_header(&String::from_utf8_lossy(dkim_header.get_value_raw())).unwrap();
-
+pub fn parse_dkim(dkim: DKIMHeader, email: mailparse::ParsedMail<'_>, dkim_public_key: DkimPublicKey) -> Result<RunInput, Error> {
     let (header_canonicalization_type, body_canonicalization_type) = parser::parse_canonicalization(dkim.get_tag("c")).unwrap();
 
     let mut body_bytes = body::compute_body_bytes(body_canonicalization_type.clone(), dkim.get_tag("l"), &email).unwrap();
@@ -63,21 +53,7 @@ pub async fn parse_dkim(email: mailparse::ParsedMail<'_>) -> Result<RunInput, Er
         b_rem: end_index as u32 % 4,
     };
 
-    let resolver = TokioAsyncResolver::tokio_from_system_conf()
-        .map_err(|err| DKIMError::UnknownInternalError(format!("failed to create DNS resolver: {}", err)))
-        .unwrap();
-    let resolver = dns::from_tokio_resolver(resolver);
-
-    let public_key = public_key::retrieve_public_key(
-        &logger,
-        Arc::clone(&resolver),
-        dkim.get_required_tag("d"),
-        dkim.get_required_tag("s"),
-    )
-    .await
-    .unwrap();
-
-    let n = match public_key {
+    let n = match dkim_public_key {
         cfdkim::DkimPublicKey::Rsa(rsa) => rsa.n().to_owned(),
         _ => panic!(""),
     };

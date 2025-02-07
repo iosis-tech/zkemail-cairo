@@ -14,6 +14,26 @@ from uint256 import uint256_from_u8_be, uint256_from_u32_be
 func main{output_ptr: felt*, range_check_ptr, bitwise_ptr: BitwiseBuiltin*}() {
     alloc_locals;
 
+    let (local domain, local domain_len, local body_str, local body_str_len) = run();
+
+    assert [output_ptr] = domain_len;
+    let output_ptr = output_ptr + 1;
+    memcpy(output_ptr, domain, domain_len);
+    let output_ptr = output_ptr + domain_len;
+
+    assert [output_ptr] = body_str_len;
+    let output_ptr = output_ptr + 1;
+    memcpy(output_ptr, body_str, body_str_len);
+    let output_ptr = output_ptr + body_str_len;
+
+    return ();
+}
+
+func run{output_ptr: felt*, range_check_ptr, bitwise_ptr: BitwiseBuiltin*}() -> (
+    domain: felt*, domain_len: felt, body_str: felt*, body_str_len: felt
+) {
+    alloc_locals;
+
     local signature: Uint2048;
     %{ set_u2048(ids.signature, dkim_input.signature) %}
     local n: Uint2048;
@@ -98,18 +118,5 @@ func main{output_ptr: felt*, range_check_ptr, bitwise_ptr: BitwiseBuiltin*}() {
         nondet %{ advice.b_rem %},
     );
 
-    %{ print("domain: ", bytes(memory.get_range(ids.domain, ids.domain_len)).decode('utf-8')) %}
-    %{ print("body: ", bytes(memory.get_range(ids.body_str, ids.body_str_len)).decode('utf-8')) %}
-
-    // assert [output_ptr] = domain_len;
-    // let output_ptr = output_ptr + 1;
-    // memcpy(output_ptr, domain, domain_len);
-    // let output_ptr = output_ptr + domain_len;
-
-    // assert [output_ptr] = body_str_len;
-    // let output_ptr = output_ptr + 1;
-    // memcpy(output_ptr, body_str, body_str_len);
-    // let output_ptr = output_ptr + body_str_len;
-
-    return ();
+    return (domain=domain, domain_len=domain_len, body_str=body_str, body_str_len=body_str_len);
 }

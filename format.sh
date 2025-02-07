@@ -1,1 +1,1 @@
-cairo-format -i *.cairo
+source "./venv/bin/activate" && cairo-format -i *.cairo
