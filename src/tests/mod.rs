@@ -31,15 +31,18 @@ async fn test_email_cairo0_verification() {
         concat!(
             "Subject: This is a test email\n",
             "From: Sven Sauleau <sven@cloudflare.com>\n",
+            "MIME-Version: 1.0\n",
+            "Date: Mon, 3 Feb 2025 21:39:34 +0100\n",
+            "To: Dorian Finch <dorian@cloudflare.com>\n",
             "\n",
-            "Hello Alice",
+            "Hello Dorian",
         )
         .as_bytes(),
     )
     .unwrap();
 
     let signer = SignerBuilder::new()
-        .with_signed_headers(&["From", "Subject"])
+        .with_signed_headers(&["From", "Subject", "MIME-Version", "Date", "To"])
         .unwrap()
         .with_private_key(DkimPrivateKey::Rsa(private_key))
         .with_selector(TEST_SELECTOR)
@@ -49,6 +52,7 @@ async fn test_email_cairo0_verification() {
         .unwrap();
     let header_string = signer.sign(&email).unwrap();
     let (header, _) = parse_header(header_string.as_bytes()).unwrap();
+    println!("{:?}", header);
     email.headers.push(header);
 
     let body = String::from_utf8_lossy(&email.get_body_raw().unwrap()).to_string();

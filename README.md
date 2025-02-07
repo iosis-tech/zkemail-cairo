@@ -1,7 +1,53 @@
-Dkim rsa-sha256 verification algorithm implementation in Cairo zkvm with rust cairo-vm support 
+# DKIM RSA-SHA256 Verification Algorithm in Cairo ZKVM
 
-Project is equipped with parsing logic for raw email data and generates a trace of cairocpu ready for proving
+This project implements the DKIM (DomainKeys Identified Mail) RSA-SHA256 verification algorithm using the Cairo zkVM (Zero-Knowledge Virtual Machine). The project is designed to parse raw email data, generate a trace of Cairo CPU operations, and produce a PIE output for prover stage.
 
-```sh
-cargo run -r compiled.json --program_input program_input.json --layout recursive --cairo_pie_output pie.zip --secure_run true
+## Overview
+
+DKIM is an email authentication method designed to detect email spoofing. It allows the receiver to check that an email was indeed sent and authorized by the owner of the domain. This project focuses on the RSA-SHA256 signature verification process, which is a common method used in DKIM.
+
+The project is implemented in Cairo, a language designed for creating provable programs, the implementation includes parsing logic for raw email data, handling of cryptographic operations, and generation of a trace that can be used for proving.
+
+## Getting Started
+
+### Setup
+
+1. **Clone the Repository**:
+   ```bash
+   https://github.com/iosis-tech/zkemail-cairo.git
+   cd zkemail-cairo
+   ```
+
+2. **Set Up the Virtual Environment**:
+   ```bash
+   ./setup.sh
+   ```
+
+3. **Build the Project**:
+   ```bash
+   cargo build
+   ```
+
+4. **Run the Tests**:
+   ```bash
+   cargo test
+   ```
+
+### Running the Project
+
+To run the Cairo DKIM verification process, use below command, `email.eml` is raw content of an email to verify
+
+```bash
+cargo run -r -- --cairo_pie_output pie.zip --secure_run true --raw_mail_file email.eml --print_output
 ```
+
+This command will execute the Cairo program with the provided input, generate a Cairo PIE file.
+
+## Contributing
+
+Contributions are welcome! Please follow these steps to contribute:
+
+1. Fork the repository.
+2. Create a new branch for your feature or bugfix.
+3. Commit your changes and push to the branch.
+4. Submit a pull request with a detailed description of your changes.
