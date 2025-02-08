@@ -18,36 +18,26 @@ The project is implemented in Cairo, a language designed for creating provable p
    cd zkemail-cairo
    ```
 
-2. **Set Up the Virtual Environment**:
+2. **Set Up Cairo0 compiler**:
    ```bash
    ./setup.sh
    ```
 
-3. **Build the Project**:
+3. **Run the example verifications**:
    ```bash
-   cargo build
-   ```
-
-4. **Run the Tests**:
-   ```bash
-   cargo test
+   cargo test -r
    ```
 
 ### Running the Project
 
-To run the Cairo DKIM verification process, use below command, `email.eml` is raw content of an email to verify
+To run the Cairo DKIM verification process, use below command, `raw_email.eml` is raw content of an email to verify
 
 ```bash
-cargo run -r -- --cairo_pie_output pie.zip --secure_run true --raw_mail_file email.eml --print_output
+cargo run -r -- --cairo_pie_output pie.zip --secure_run true --raw_mail_file raw_email.eml --print_output
 ```
 
 This command will execute the Cairo program with the provided input, generate a Cairo PIE file.
 
 ## Contributing
 
-Contributions are welcome! Please follow these steps to contribute:
-
-1. Fork the repository.
-2. Create a new branch for your feature or bugfix.
-3. Commit your changes and push to the branch.
-4. Submit a pull request with a detailed description of your changes.
+Contributions and guidance are very welcome!

@@ -14,7 +14,7 @@ use std::{env, fs, path::PathBuf, sync::Arc};
 
 use cairo_vm::{
     cairo_run::{self, cairo_run_program},
-    types::{layout::CairoLayoutParams, layout_name::LayoutName, program::Program, relocatable::Relocatable},
+    types::{layout_name::LayoutName, program::Program, relocatable::Relocatable},
     Felt252,
 };
 use cfdkim::{dns, header::HEADER, public_key, validate_header, DKIMError};
@@ -36,7 +36,7 @@ struct Args {
     #[structopt(long = "memory_file")]
     memory_file: Option<PathBuf>,
     /// When using dynamic layout, it's parameters must be specified through a layout params file.
-    #[clap(long = "layout", default_value = "recursive", value_enum)]
+    #[clap(long = "layout", default_value = "all_cairo", value_enum)]
     layout: LayoutName,
     /// Required when using with dynamic layout.
     /// Ignored otherwise.
@@ -72,11 +72,6 @@ async fn main() -> Result<(), Error> {
 
     let args = Args::try_parse_from(std::env::args()).map_err(Error::Cli)?;
 
-    let cairo_layout_params = match args.cairo_layout_params_file {
-        Some(file) => Some(CairoLayoutParams::from_file(&file)?),
-        None => None,
-    };
-
     // Init CairoRunConfig
     let cairo_run_config = cairo_run::CairoRunConfig {
         trace_enabled: args.trace_file.is_some() || args.air_public_input.is_some(),
@@ -85,7 +80,6 @@ async fn main() -> Result<(), Error> {
         proof_mode: args.proof_mode,
         secure_run: args.secure_run,
         allow_missing_builtins: args.allow_missing_builtins,
-        dynamic_layout_params: cairo_layout_params,
         ..Default::default()
     };
 

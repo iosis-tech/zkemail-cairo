@@ -65,7 +65,7 @@ async fn test_email_cairo0_verification() {
 
     // Init CairoRunConfig
     let cairo_run_config = cairo_run::CairoRunConfig {
-        layout: cairo_vm::types::layout_name::LayoutName::recursive,
+        layout: cairo_vm::types::layout_name::LayoutName::all_cairo,
         ..Default::default()
     };
 

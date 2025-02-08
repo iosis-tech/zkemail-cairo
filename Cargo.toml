@@ -5,9 +5,9 @@ edition = "2021"
 
 [dependencies]
 base64 = "0.22.1"
-cairo-type-derive = { git = "https://github.com/keep-starknet-strange/snos.git", rev = "35a300a10d2107482ada440b5025ee2f651afbd4" }
-cairo-vm = { git = "https://github.com/lambdaclass/cairo-vm", rev = "62804bcbf58b436a8986e7da0ee80333400b1ffb", features = ["extensive_hints", "clap", "cairo-1-hints"] }
-cfdkim = { path = "../dkim/" }
+cairo-type-derive = { git = "https://github.com/keep-starknet-strange/snos.git", rev = "e4599fe859955f6763f51306605b88e7967f40b2" }
+cairo-vm = { git = "https://github.com/lambdaclass/cairo-vm", tag = "v1.0.2", features = ["extensive_hints", "clap", "cairo-1-hints"] }
+cfdkim = { git = "https://github.com/Okm165/dkim.git" }
 clap = { version = "4.3.10", features = ["derive"] }
 generic-array = { version = "0.14.7", default-features = false }
 mailparse = "0.14"
@@ -16,7 +16,7 @@ num-integer = "0.1.46"
 regex = "1.11.1"
 rsa = "0.9.7"
 serde = "1.0.215"
-serde_json = { version = "1.0.132", features = ["arbitrary_precision"] }
+serde_json = "1.0.132"
 serde_with = "3.12.0"
 sha2 = { version = "0.10.7", features = ["compress"], default-features = false }
 slog = "2.7.0"
