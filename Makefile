@@ -11,8 +11,8 @@ setup:
 
 # Run cairo-format inplace
 format:
-	source ./venv/bin/activate && cairo-format -i *.cairo
+	./venv/bin/cairo-format -i *.cairo
 
 # Run cairo-format check
 format-check:
-	source ./venv/bin/activate && cairo-format -c *.cairo
+	./venv/bin/cairo-format -c *.cairo
