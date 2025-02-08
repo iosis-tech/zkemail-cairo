@@ -20,7 +20,7 @@ The project is implemented in Cairo, a language designed for creating provable p
 
 2. **Set Up Cairo0 compiler**:
    ```bash
-   ./setup.sh
+   make
    ```
 
 3. **Run the example verifications**:
