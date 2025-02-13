@@ -138,7 +138,7 @@ async fn main() -> Result<(), Error> {
             outputs.push(String::from_utf8_lossy(&alloc).to_string());
         }
 
-        debug!("{:?}", outputs);
+        debug!("{:#?}", outputs);
     }
 
     if let Some(ref file_name) = args.cairo_pie_output {
