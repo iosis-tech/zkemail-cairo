@@ -22,7 +22,7 @@ use clap::Parser;
 use dkim::parse_dkim;
 use hint_processor::CustomHintProcessor;
 use mailparse::MailHeaderMap;
-use tracing::debug;
+use tracing::{debug, info};
 use trust_dns_resolver::TokioAsyncResolver;
 use types::error::Error;
 
@@ -138,7 +138,7 @@ async fn main() -> Result<(), Error> {
             outputs.push(String::from_utf8_lossy(&alloc).to_string());
         }
 
-        debug!("{:#?}", outputs);
+        info!("{:#?}", outputs);
     }
 
     if let Some(ref file_name) = args.cairo_pie_output {
