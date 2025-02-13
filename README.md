@@ -36,6 +36,13 @@ To run the Cairo DKIM verification process, use below command, `raw_email.eml` i
 cargo run -r -- --cairo_pie_output pie.zip --secure_run true --raw_mail_file raw_email.eml --print_output
 ```
 
+### Generating a proof with STWO
+
+Run and prove with [STWO](https://github.com/starkware-libs/stwo-cairo):
+```bash
+run_and_prove --run_from_cairo_pie pie.zip --proof_path proof.json
+```
+
 This command will execute the Cairo program with the provided input, generate a Cairo PIE file.
 
 ## Contributing
