@@ -49,7 +49,7 @@ After generating the PIE file, you can create a proof:
   - Additional details are available in the [stwo-web-stark repository](https://github.com/Okm165/stwo-web-stark).
 
 - **Locally:**
-  Run the following command to generate the proof:
+  Run the following command to generate the proof with [STWO](https://github.com/starkware-libs/stwo-cairo) cli:
   ```bash
   run_and_prove --run_from_cairo_pie pie.zip --proof_path proof.json
   ```
