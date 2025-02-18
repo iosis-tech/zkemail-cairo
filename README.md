@@ -28,22 +28,32 @@ The project is implemented in Cairo, a language designed for creating provable p
    cargo test -r
    ```
 
-### Running the Project
+### Running the DKIM Verification
 
-To run the Cairo DKIM verification process, use below command, `raw_email.eml` is raw content of an email to verify
+To perform the verification on a raw email file:
 
 ```bash
 cargo run -r -- --cairo_pie_output pie.zip --secure_run true --raw_mail_file raw_email.eml --print_output
 ```
 
-This command will execute the Cairo program with the provided input, generate a Cairo PIE file.
+- **Parameters:**
+  - `raw_email.eml`: The raw email content to verify.
+  - `pie.zip`: Output file containing the generated Cairo PIE file.
 
-### Generating a proof with STWO
+### Generating a Proof with STWO
 
-Run and prove with [STWO](https://github.com/starkware-libs/stwo-cairo):
-```bash
-run_and_prove --run_from_cairo_pie pie.zip --proof_path proof.json
-```
+After generating the PIE file, you can create a proof:
+
+- **Using the Web Prover:**
+  - Visit [stwo-web-stark](http://demo.stwo.iosis.tech/) - WASM web interface client side prover.
+  - Additional details are available in the [stwo-web-stark repository](https://github.com/Okm165/stwo-web-stark).
+
+- **Locally:**
+  Run the following command to generate the proof:
+  ```bash
+  run_and_prove --run_from_cairo_pie pie.zip --proof_path proof.json
+  ```
+  The proof will be saved to `proof.json`.
 
 ## Contributing
 
